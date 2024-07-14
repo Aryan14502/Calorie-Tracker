@@ -1,0 +1,30 @@
+.food-fact-container {
+    position: relative;
+    width: 300px; /* adjust the width as needed */
+    height: 200px; /* adjust the height as needed */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+  
+  .food-fact {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  
+  .food-fact-container.loaded .food-fact {
+    opacity: 1;
+    transform: translateY(0);
+  }

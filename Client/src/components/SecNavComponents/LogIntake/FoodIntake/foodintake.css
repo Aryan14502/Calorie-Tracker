@@ -1,0 +1,174 @@
+/* .container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+  } */
+  
+  h1 {
+    font-size: 2em;
+    margin-bottom: 1em;
+  }
+  
+  .search-bar {
+    display: flex;
+    /* flex: 1; */
+    flex-direction: row;
+ 
+    /* border: 1px solid #ccc; */
+    justify-content: center; 
+    margin-left: 300px;
+    margin-right: 300px;
+    align-items: center; 
+    /* margin-bottom: 1em; */
+
+  }
+  
+  .search-bar input {
+    
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* width: 600px; */
+    width: 400px; /* updated to 80% */
+    height: 40px;
+  }
+  
+  .search-bar button {
+    padding: 0.5em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    margin-bottom: 8px;
+    /* border-radius: 5px; */
+    cursor: pointer;
+    width: 20%; /* updated to 80% */
+    height: 40px;
+
+  }
+  
+  .matching-foods {
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    box-shadow: 1px 6px 20px 0px black;
+
+
+    
+
+  }
+  
+  .food-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .food-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .food-name {
+    flex: 1;
+    margin-right: 1em;
+  }
+  
+  .food-details {
+    flex: 2;
+    margin-right: 1em;
+  }
+  
+  .food-check {
+    flex: 0.5;
+  }
+  
+  .food-check img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .food-details p {
+    margin: 0;
+  }
+  
+  .food-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .food-details p {
+    margin: 0;
+  }
+  
+  .food-details label {
+    margin-right: 0.5em;
+  }
+  
+  .food-details select {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100px;
+  }
+  
+  .food-details button {
+    padding: 0.5em 1em;
+    margin-left: 1em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .not-found {
+    margin-top: 1em;
+  }
+  
+  .not-found a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  
+  .not-found a:hover {
+    text-decoration: underline;
+  }
+
+  .food-quantity input{
+    border  : 1px solid black;
+  }
+
+
+  .region-select {
+    margin-bottom: 20px;
+    width: 600px;
+    margin-left: 250px;
+  }
+  
+  .region-select label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .region-select select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .region-select select:focus {
+    border-color: #aaa;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .region-select select option {
+    padding: 10px;
+  }

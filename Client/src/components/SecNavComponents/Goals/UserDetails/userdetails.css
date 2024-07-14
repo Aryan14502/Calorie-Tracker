@@ -1,0 +1,103 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f9f9f9;
+  }
+  
+  .form-container {
+    width: 500px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    align-items :center;
+    gap: 20px;
+  }
+  
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 5px;
+    gap: 10px;
+  }
+  .first_form-section{
+    margin-top :10px;
+  }
+  .form-section h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .form-section p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .input-group label {
+    margin-right: 10px;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .input-group input {
+    width: 100px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .input-group.unit {
+    margin-left: 5px;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .change-units {
+    padding: 8px 15px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .button-group button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 3px;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .button-group.back {
+    background-color: #f44336;
+  }

@@ -1,0 +1,66 @@
+/* .goal-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+     height: 500px; }
+      */
+     
+     /* increased the height to fit all the buttons */
+  /* overflow-y: auto; added this to enable vertical scrolling if needed} */
+  
+
+
+  
+  .goal-options {
+    display: flex;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .goal-button {
+    width: 100%;
+  /* margin: 10px 0; */
+    /* margin: 10px;
+    padding: 10px 20px; */
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #FFFFFF; /* changed from green to white */
+    color: #000000; /* added this to make the text visible on a white background */
+    cursor: pointer;
+  }
+  
+  .goal-button.hover :hover {
+    /* background-color: #3e8e41; */
+    background-color: #CCCCCC; /* changed from green to a light gray */
+  }
+  
+  .back-button, .next-button {
+    /* margin: 20px;
+    padding: 10px 20px; */
+    border: none;
+    border-radius: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+  }
+  .elected {
+    background-color: green;
+
+  }
+  .next-elected{
+    background-color: green;
+  }
+  
+  .back-button:hover, .next-button:hover {
+    background-color: #3e8e41;
+  }
+
+  .nav-buttons{
+    display:flex;
+    justify-content: space-between;
+  }
