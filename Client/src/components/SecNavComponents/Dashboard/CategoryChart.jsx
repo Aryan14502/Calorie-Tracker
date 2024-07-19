@@ -32,9 +32,9 @@ const Title = styled.div`
 const CategoryChart = ({ what ,data}) => {
   return (
     <Card>
-      <Title>Carbs</Title>
+      {/* <Title>Carbs</Title>
       <Title>Proteins</Title>
-      <Title>Fats</Title>
+      <Title>Fats</Title> */}
       <PieChart
         series={[
           {

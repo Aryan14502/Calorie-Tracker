@@ -1,8 +1,10 @@
 
 import React, { useState } from "react";
+import {useNavigate,useLocation} from 'react-router-dom'
 import styled from "styled-components";
 import TextInput from "../TextInput";
 import Button from "../Button";
+import axios from '../../../axios'
 // import { UserSignIn } from "../api";
 // import { useDispatch } from "react-redux";
 // import { loginSuccess } from "../redux/reducers/userSlice";
@@ -24,7 +26,8 @@ const Span = styled.div`
   font-weight: 400;
   color: ${({ theme }) => theme.text_secondary + 90};
 `;
-
+// import {useContext} from 'react' 
+// import { UserContext } from "../../contexts/userContext";
 const SignIn = () => {
   // const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -32,12 +35,34 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // const {user ,setUser,isSignedIn,setIsSignedIn} = useContext(UserContext);
+
+
+  const navigate = useNavigate();
+  const location =useLocation();
+
   const validateInputs = () => {
+
     if (!email || !password) {
       alert("Please fill in all fields");
-      return false;
+      // return false;
     }
-    return true;
+
+    if(email && password)
+    {
+      // I will send the request to the server in server.js there in the app.get('./usersigninvalidation') i will be validating the user and sending the response either true or false with the users name.
+      // if he is the valid user i will redirect him to the dashboard
+      const validated  = "Pratik";
+      if(validated){
+          return true;
+          // setUser(true);
+      }
+
+
+
+    }
+
+    
   };
 
   // const handelSignIn = async () => {
@@ -59,11 +84,53 @@ const SignIn = () => {
   //   }
   // };
 
-  const handleSignIn = async()=>{
-    if(validateInputs()){
-      alert("Login Success");
+  const handleSignIn = async(event)=>{
+
+    // event.preventDefault();
+    // setIsLoading(true);
+    // setError('');
+    try{
+
+      const userData = {
+        email:email,
+        password: password,
+      }
+
+      const response = await axios.post('http://localhost:3001/userlogin', userData);
+
+      if (response.status === 201) {
+        alert("Logged In Successfully");
+        navigate(`${location.pathname}/../dashboard`, { replace: true });
+
+      } 
+      // else if(response.status === 400)
+      // {
+      //   alert(response.message);
+      // }
+      // else {
+      //   alert("Error creating account");
+      // }
     }
-  }
+    catch{
+      // console.error(error);
+      alert("Error creating account");
+    }
+
+      // Assuming your response contains a token and user info
+      // const { token, user } = response.data;
+
+      // Store the token in localStorage or cookie
+      // localStorage.setItem('token', token);
+
+      // Optionally, store user information in localStorage or context
+      // localStorage.setItem('user', JSON.stringify(user));
+
+      // Redirect or update the UI to indicate the user is logged in
+      // window.location.href = '/dashboard'; // or use React Router to redirect
+
+  };
+
+  
 
   return (
     <Container>
@@ -82,25 +149,25 @@ const SignIn = () => {
           label="Email Address"
           placeholder="Enter your email address"
           value={email}
-          handelChange={(e) => setEmail(e.target.value)}
+          handleChange={(e) => setEmail(e.target.value)}
         />
         <TextInput
           label="Password"
           placeholder="Enter your password"
           password
           value={password}
-          handelChange={(e) => setPassword(e.target.value)}
+          handleChange={(e) => setPassword(e.target.value)}
         />
         <Button
           text="SignIn"
-          onClick={handleSignIn}
+          onClick={(e)=>{handleSignIn(e)}}
           isLoading={loading}
           isDisabled={buttonDisabled}
         />
       </div>
     </Container>
   );
-};
+}
 
 export default SignIn;
 

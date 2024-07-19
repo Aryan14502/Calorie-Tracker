@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../assets/logo2.png";
@@ -6,7 +6,7 @@ import "./header.css";
 // import { useDispatch } from "react-redux";
 import { signup } from "../Authentication/SignUp/SignUp.jsx";
 import { useAuth0 } from "@auth0/auth0-react";
-
+import { UserContext } from "../../contexts/userContext.js";
 
 const NavLogo = styled(Link)`
   width: 100%;
@@ -26,13 +26,13 @@ const Logo = styled.img`
   height: 62px;
 `;
 
-
 function Header({ setUser, setIsSignedIn }) {
   const navigate = useNavigate();
-
+  // const {user,setUser} = useContext(UserContext);
+  const { loginWithRedirect } = useAuth0();
 
   const handleLoginClick = () => {
-    navigate('/signin'); // Navigate to signin page
+    navigate("/authentication"); // Navigate to signin page
   };
   return (
     <div className="navbar">
@@ -62,9 +62,17 @@ function Header({ setUser, setIsSignedIn }) {
       </div>
 
       <div className="navbar-sign">
-   
-          <button onClick={() => {handleLoginClick()}}>Log In</button>;
-    
+        <button
+          onClick={() => {
+            loginWithRedirect();
+          }}
+        >
+          Log In
+        </button>
+        ;{/* <button onClick={() => {handleLoginClick()}}>Log In</button>; */}
+
+
+
         {/* <button type="button" onClick={()=>{handleSignUp()}}>Sign up</button> */}
       </div>
     </div>

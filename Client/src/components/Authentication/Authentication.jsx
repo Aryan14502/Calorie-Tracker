@@ -4,6 +4,8 @@ import LogoImage from '../../assets/cherry.jpeg';
 import AuthImage from '../../assets/home.jpeg';
 import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
+// import SignIn from "./components/Authentication/SignIn/SignIn.jsx";
+// import SignUp from "./components/Authentication/SignUp/SignUp.jsx";
 
 const Container = styled.div`
   flex: 1;
@@ -62,8 +64,11 @@ const TextButton = styled.span`
   font-weight: 600;
 `;
 
+// import {useContext} from 'react' 
+// import { UserContext } from "../../contexts/userContext";
 const Authentication = () => {
   const [login, setLogin] = useState(false);
+  // const {user ,setUser,isSignedIn,setisSignedIn} = useContext(UserContext);
   return (
     <Container>
       <Left>

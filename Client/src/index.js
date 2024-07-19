@@ -9,6 +9,9 @@ import AboutUs from './components/navbarComponents/aboutUs/AboutUs.jsx'
 import Features from './components/navbarComponents/features/Features.jsx';
 import SignIn from './components/Authentication/SignIn/SignIn.jsx'
 
+// import { UserProvider } from './contexts/userContext.js';
+import { UsersInfoProvider } from './contexts/usersInfoContext.js';
+
 // const router = createBrowserRouter(
 //   createRoutesFromElements(
 
@@ -27,16 +30,22 @@ import SignIn from './components/Authentication/SignIn/SignIn.jsx'
 // )
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Auth0Provider
-    domain="dev-lhh2s24sw2nyrvxq.us.auth0.com"
-    clientId="FRaUjE97nAyJf9xn5LfzhHHnkfz7He2k"
-    authorizationParams={{
-      redirect_uri: window.location.origin
-    }}
-  >
-    {/* <RouterProvider router={router} /> */}
-    <MainPage />
-  </Auth0Provider>
+  // <UserProvider>
+    <UsersInfoProvider>
+      <Auth0Provider
+          domain="dev-lhh2s24sw2nyrvxq.us.auth0.com"
+          clientId="FRaUjE97nAyJf9xn5LfzhHHnkfz7He2k"
+          authorizationParams={{
+            redirect_uri: `${window.location.origin}/dashboard`
+          }}>
+
+      {/* <RouterProvider router={router} /> */}
+        <MainPage />
+
+      </Auth0Provider>
+    </UsersInfoProvider>
+ // </UserProvider> 
+  
 
 );
 

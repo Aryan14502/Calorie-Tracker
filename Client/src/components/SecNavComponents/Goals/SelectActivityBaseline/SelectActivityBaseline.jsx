@@ -1,9 +1,9 @@
 import React from "react";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import {useNavigate} from 'react-router-dom';
 import "./selectactivitybaseline.css";
 import styled from "styled-components";
-
+import UsersInfoContext from "../../../../contexts/usersInfoContext";
 
 const Container = styled.div`
   flex: 1;
@@ -25,6 +25,8 @@ const Wrapper = styled.div`
   }
 `;
 function SelectActivityBaseline() {
+
+  const {usersData}  = useContext(UsersInfoContext);
   //   const optionElements = document.querySelectorAll(
   //     ".activity-level-selector__option"
   //   );
@@ -62,6 +64,8 @@ function SelectActivityBaseline() {
   }
 
   function handleNextClick(){
+    usersData.baselineactivityLevel = baselineActivitylevel[0]
+    console.log(usersData);
     navigate('/userdetails');
   }
 
@@ -144,6 +148,9 @@ function SelectActivityBaseline() {
             </div>
           </div>
         </div>
+
+     
+
         <div className="activity-level-selector__button-list">
           <button className="activity-level-selector__button activity-level-selector__button--back">
             BACK

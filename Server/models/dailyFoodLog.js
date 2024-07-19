@@ -13,6 +13,8 @@ const DailyFoodLogSchema = mongoose.Schema(
     carbs: {type : String}, 
     fat: {type : String} ,
     calories: {type : Number},
+    user_Id: {type : String},
+    date : {type : Date}
 
 
 

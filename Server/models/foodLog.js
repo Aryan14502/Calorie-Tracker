@@ -17,62 +17,84 @@ const mongoose = require('mongoose');
 // })
 
 
+
 const foodLogSchema = new mongoose.Schema({
+
+
 //   _id: mongoose.Schema.Types.ObjectId,
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  user_Id: { type: String },
   date: { type: Date},
   breakfast: [
     {
-      foodItemId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodItem' },
+      foodItemId: { type: String },
+      foodItemTitle : {type : String},
       quantity: { type: Number, required: true },
       measurementUnit: { type: String, required: true },
-      macronutrients: {
-        protein: { type: Number, required: true },
-        carbohydrates: { type: Number, required: true },
-        fat: { type: Number, required: true }
-      },
+      
+        protein: { type: String, required: true },
+        carbohydrates: { type: String, required: true },
+        fat: { type: String, required: true },
+    
       calories: { type: Number, required: true }
     }
   ],
   lunch: [
     {
-      foodItemId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodItem' },
+      foodItemId: { type:String},
+      foodItemTitle : {type : String},
       quantity: { type: Number, required: true },
       measurementUnit: { type: String, required: true },
-      macronutrients: {
-        protein: { type: Number, required: true },
-        carbohydrates: { type: Number, required: true },
-        fat: { type: Number, required: true }
-      },
+    
+        protein: { type: String, required: true },
+        carbohydrates: { type: String, required: true },
+        fat: { type: String, required: true }
+      ,
       calories: { type: Number, required: true }
     }
   ],
   dinner: [
     {
-      foodItemId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodItem' },
+      foodItemId: { type: String },
+      foodItemTitle : {type : String},
       quantity: { type: Number, required: true },
       measurementUnit: { type: String, required: true },
-      macronutrients: {
-        protein: { type: Number, required: true },
-        carbohydrates: { type: Number, required: true },
-        fat: { type: Number, required: true }
-      },
+     
+        protein: { type: String, required: true },
+        carbohydrates: { type: String, required: true },
+        fat: { type: String, required: true }
+      ,
       calories: { type: Number, required: true }
     }
   ],
   snacks: [
     {
-      foodItemId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodItem' },
+      foodItemId: { type: Number },
+      foodItemTitle : {type : String},
       quantity: { type: Number, required: true },
       measurementUnit: { type: String, required: true },
-      macronutrients: {
-        protein: { type: Number, required: true },
-        carbohydrates: { type: Number, required: true },
-        fat: { type: Number, required: true }
-      },
+    
+        protein: { type: String, required: true },
+        carbohydrates: { type: String, required: true },
+        fat: { type: String, required: true }
+      ,
       calories: { type: Number, required: true }
     }
-  ]
+  ],
+  totalCalories: {
+    type: Number
+  },
+  totalMacronutrients: {
+    protein: {
+      type: String
+    },
+    carbohydrates: {
+      type: String
+    },
+    fat: {
+      type: String
+    }
+  }
+
 });
 
 const FoodLog = mongoose.model('FoodLog', foodLogSchema,'FoodLog');

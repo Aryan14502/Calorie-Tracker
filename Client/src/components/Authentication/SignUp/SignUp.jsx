@@ -1,9 +1,9 @@
-
-
 import React, { useState } from "react";
+import {useNavigate,useLocation} from 'react-router-dom'
 import styled from "styled-components";
 import TextInput from "../TextInput";
 import Button from "../Button";
+import axios from '../../../axios';
 // import { UserSignUp } from "../api";
 // import { useDispatch } from "react-redux";
 // import { loginSuccess } from "../redux/reducers/userSlice";
@@ -33,6 +33,9 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  
 
   const validateInputs = () => {
     if (!name || !email || !password) {
@@ -61,11 +64,34 @@ const SignUp = () => {
   //   }
   // };
 
-  const handleSignUp = async()=>{
-    if(validateInputs()){
-      alert("Account Created Success");
+  const handleSignUp = async () => {
+    if (validateInputs()) {
+      try {
+        const userData = {
+          name: name,
+          email:email,
+          password: password,
+          createdAt: new Date().toISOString(), // Add createdAt property with timestamp
+          // Add other user data as needed
+        };
+
+        const response = await axios.post("http://localhost:3001/newuseraccount", userData);
+
+        if (response.status === 201) {
+          alert("Account Created Successfully");
+          navigate(`${location.pathname}/../dashboard`, { replace: true });
+
+        } else {
+          alert("Error creating account");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("Error creating account");
+      }
     }
-  }
+  };
+
+
   return (
     <Container>
       <div>
@@ -83,20 +109,20 @@ const SignUp = () => {
           label="Full name"
           placeholder="Enter your full name"
           value={name}
-          handelChange={(e) => setName(e.target.value)}
+          handleChange={(e) => setName(e.target.value)}
         />
         <TextInput
           label="Email Address"
           placeholder="Enter your email address"
           value={email}
-          handelChange={(e) => setEmail(e.target.value)}
+          handleChange={(e) => setEmail(e.target.value)}
         />
         <TextInput
           label="Password"
           placeholder="Enter your password"
           password
           value={password}
-          handelChange={(e) => setPassword(e.target.value)}
+          handleChange={(e) => setPassword(e.target.value)}
         />
         <Button
           text="SignUp"
@@ -110,10 +136,6 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-
-
-
 
 // import React from 'react';
 // import './signup.css';

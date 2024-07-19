@@ -72,8 +72,8 @@ function FoodIntake() {
     );
     // console.log(selectedFoodData);
     setSelectedFood(selectedFoodData);
-    console.log(selectedFood);
-    console.log(servings);
+    // console.log(selectedFood);
+    // console.log(servings);
   };
 
   const handleChangeOfServings = (e) => {
@@ -82,7 +82,7 @@ function FoodIntake() {
 
   const handleRegionChange = (e)=>{
     setCuisine(e.target.value);
-    console.log(cuisine)
+    // console.log(cuisine)
 
   }
   return (

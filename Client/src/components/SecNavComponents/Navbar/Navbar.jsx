@@ -1,16 +1,18 @@
-
 import React, { useState } from "react";
 import styled from "styled-components";
-import { MenuRounded } from "@mui/icons-material"
+import { MenuRounded } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
-import {Link,NavLink} from 'react-router-dom'
+import { Link, NavLink } from "react-router-dom";
 import LogoImg from "../../../assets/logo2.png";
+import { useAuth0 } from "@auth0/auth0-react";
+// import { Avatar } from "@mui/material";
+import './navbar.css';
 import { useDispatch } from "react-redux";
 // import { logout } from "../redux/reducers/userSlice";
 
 const Nav = styled.div`
-//   background-color: ${({ theme }) => theme.bg};
-//  background-color: #f8d3dc;
+  //   background-color: ${({ theme }) => theme.bg};
+  //  background-color: #f8d3dc;
   height: 80px;
   display: flex;
   align-items: center;
@@ -20,8 +22,8 @@ const Nav = styled.div`
   top: 0;
   z-index: 10;
   color: white;
-//   border-bottom: 2px solid ${({ theme }) => theme.text_secondary + 20};
-border-bottom: 1px solid grey;
+  //   border-bottom: 2px solid ${({ theme }) => theme.text_secondary + 20};
+  border-bottom: 1px solid grey;
 `;
 
 const NavContainer = styled.div`
@@ -39,7 +41,7 @@ const Navlink = styled(NavLink)`
   display: flex;
   align-items: center;
   // color: ${({ theme }) => theme.text_primary};
-  color:blue;
+  color: blue;
   font-weight: 500;
   cursor: pointer;
   transition: all 1s slide-in;
@@ -76,12 +78,12 @@ const NavLogo = styled(Link)`
   font-weight: 600;
   font-size: 18px;
   text-decoration: none;
-//    background-color: #f8d3dc;
+  //    background-color: #f8d3dc;
   color: ${({ theme }) => theme.black};
 `;
 
 const Logo = styled.img`
-//  background-color: #f8d3dc;
+  //  background-color: #f8d3dc;
   height: 62px;
 `;
 
@@ -98,8 +100,8 @@ const UserContainer = styled.div`
 
 const TextButton = styled.div`
   text-align: end;
-//   color: ${({ theme }) => theme.secondary};
-color:blue;
+  //   color: ${({ theme }) => theme.secondary};
+  color: blue;
   cursor: pointer;
   font-size: 16px;
   transition: all 0.3s ease;
@@ -109,17 +111,14 @@ color:blue;
   }
 `;
 
-
 const Mobileicon = styled.div`
   color: ${({ theme }) => theme.text_primary};
   display: none;
-    @media screen and (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     display: flex;
     align-items: center;
   }
-
 `;
-
 
 const MobileMenu = styled.ul`
   display: flex;
@@ -143,14 +142,13 @@ const MobileMenu = styled.ul`
   z-index: ${({ isOpen }) => (isOpen ? "1000" : "-1000")};
 `;
 
-
 const Navbar = () => {
-
-    const [isOpen,setisOpen] = useState(false)
+  const [isOpen, setisOpen] = useState(false);
+  const { user,logout } = useAuth0();
+  
   return (
     <Nav>
       <NavContainer>
-
         <Mobileicon onClick={() => setisOpen(!isOpen)}>
           <MenuRounded sx={{ color: "inherit" }} />
         </Mobileicon>
@@ -158,8 +156,7 @@ const Navbar = () => {
         <NavLogo to="/">
           <Logo src={LogoImg} />
           {/* EatWell                                                                                                                                                                                       */}
-        </NavLogo>       
-
+        </NavLogo>
 
         <MobileMenu isOpen={isOpen}>
           <Navlink to="user/dashboard">Dashboard</Navlink>
@@ -167,11 +164,10 @@ const Navbar = () => {
           <Navlink to="/recipes">Recipes</Navlink>
           <Navlink to="/blogs">Blogs</Navlink>
           <Navlink to="/contact">Contact</Navlink>
-        </MobileMenu>                                                                                                                            
-
+        </MobileMenu>
 
         <NavItems>
-          <Navlink to="/">Dashboard</Navlink>
+          <Navlink to="/dashboard">Dashboard</Navlink>
           {/* <Navlink to="/workouts">Workouts</Navlink> */}
           <Navlink to="/recipes">Recipes</Navlink>
           <Navlink to="/logIntake">Today's Intake</Navlink>
@@ -179,14 +175,19 @@ const Navbar = () => {
           <Navlink to="/diet">Diet</Navlink>
         </NavItems>
 
-
-
         <UserContainer>
-          <Avatar></Avatar>
-          <TextButton>Logout</TextButton>
+          <Avatar src={user?.picture}>{user?.nickname}</Avatar>
+          {/* <TextButton>Logout</TextButton> */}
+          <div className="navbar-sign">
+            <button
+              onClick={() => {
+                logout();
+              }}
+            >
+              Logout
+            </button>
+          </div>
         </UserContainer>
-
-
       </NavContainer>
     </Nav>
   );

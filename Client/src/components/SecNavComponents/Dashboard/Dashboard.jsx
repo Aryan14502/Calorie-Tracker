@@ -4,7 +4,10 @@ import { counts } from "../../../utils/DashboardRelated/data";
 import CountsCard from "./CountsCard";
 import WeeklyStatsCard from "./WeeklyStatsCard";
 import CategoryChart from "./CategoryChart";
-import AiComponent from "./AiComponent";
+import AiComponent from "./AIComponent";
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from '../../../axios';
+
 // import './dashboard.css';
 const Container = styled.div`
   flex: 1;
@@ -80,6 +83,64 @@ const data = {
 
 function Dashboard() {
   // const [data, setData] = useState("");
+  const [userData, setUserData] = useState(null);
+  const { getAccessTokenSilently } = useAuth0();
+  const {user} = useAuth0();
+
+// ===========================================================================================
+  // UseEffect For AI Component
+
+  const [recommendations, setRecommendations] = useState([]);
+  const [progress, setProgress] = useState({});
+  
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        const userId = user?.sub;
+        console.log(userId)
+        const response = await axios.get(`/recommend?user_id=${userId}`);
+        const data = response.data;
+        console.log(data)
+        
+        // setRecommendations(response.data.recommendations);
+        // setProgress(response.data.progress);
+      } catch (error) {
+        console.error('Error fetching recommendations:', error);
+      }
+    };
+
+    fetchRecommendations();
+  }, []);
+
+// ===========================================================================================
+
+
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const token = await getAccessTokenSilently({
+  //         scope: 'read:user_data',
+  //       });
+  //       const response = await axios.post('http://localhost:3001/userdata', {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       const data = await response.json();
+  //       setUserData(data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchUserData();
+  //   console.log("usersfulldata : ",{userData})
+  // }, [getAccessTokenSilently]);
+
+
+
+
+  console.log("Current user : ",{user});
   const data = {
     pieChartData: [
       { name: "Category 1", value: 10 },
@@ -95,24 +156,26 @@ function Dashboard() {
   const [foodFact, setFoodFact] = useState('hello');
   const [loaded, setLoaded] = useState(true);
 
-  useEffect(() => {
-    console.log('useEffect called')
-    const apiKey = "3ffb6fa2920e40b9b74433a1c86bf79a";
-    const url = `https://api.spoonacular.com/food/jokes/random?apiKey=${apiKey}`;
-    // fetch the food fact data from an API or a database
+  // useEffect(() => {
+  //   console.log('useEffect called')
+  //   const apiKey = "3ffb6fa2920e40b9b74433a1c86bf79a";
+  //   const url = `https://api.spoonacular.com/food/jokes/random?apiKey=${apiKey}`;
+  //   // fetch the food fact data from an API or a database
     
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.text);
+  //   fetch(url)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data.text);
 
-        // setFoodFact(data.);
-        setLoaded(true);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+  //       // setFoodFact(data.);
+  //       setLoaded(true);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, []);
+
+  
 
   return (
 
@@ -120,13 +183,13 @@ function Dashboard() {
 
     <Container>
       <Wrapper>
-        <Title>Dashboard</Title>
+        <Title>{`Hii ${user?.name}, Welcome to Dashboard`}</Title>
         <FoodFactContainer >
           <FoodFact>{foodFact}</FoodFact>
         </FoodFactContainer>
         <FlexWrap>
           <CategoryChart what={"Carbohydrates"} data={data} />
-          <AiComponent data={data} />
+          <AiComponent progress={progress} recommendations={recommendations} />
           {/* <CategoryChart what={"Proteins"}  data={data}/>
           <CategoryChart what={"Fats"}  data={data}/> */}
         </FlexWrap>

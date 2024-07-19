@@ -64,6 +64,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    
 }
 .logo {
     margin-right: 2rem;
@@ -86,7 +87,7 @@
 
 .navbar-links_container p , .navbar-sign p{
 
-    color: #fff;
+    color: blue;
     font-family: var(--font-family);
     font-weight: 500;
     font-size: 18px;

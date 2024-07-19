@@ -1,66 +1,80 @@
-/* .goal-container {
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-     height: 500px; }
-      */
-     
-     /* increased the height to fit all the buttons */
-  /* overflow-y: auto; added this to enable vertical scrolling if needed} */
-  
+/* Container and Wrapper styles are already in the styled-components */
 
+/* Goal Options Styles */
+.goal-options {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px; /* Added gap between buttons */
+}
 
-  
-  .goal-options {
-    display: flex;
-    /* flex-wrap: wrap; */
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .goal-button {
-    width: 100%;
-  /* margin: 10px 0; */
-    /* margin: 10px;
-    padding: 10px 20px; */
-    border: 1px solid black;
-    border-radius: 10px;
-    background-color: #FFFFFF; /* changed from green to white */
-    color: #000000; /* added this to make the text visible on a white background */
-    cursor: pointer;
-  }
-  
-  .goal-button.hover :hover {
-    /* background-color: #3e8e41; */
-    background-color: #CCCCCC; /* changed from green to a light gray */
-  }
-  
-  .back-button, .next-button {
-    /* margin: 20px;
-    padding: 10px 20px; */
-    border: none;
-    border-radius: 10px;
-    background-color: #4CAF50;
-    color: #fff;
-    cursor: pointer;
-  }
-  .elected {
-    background-color: green;
+/* Goal Button Styles */
+.goal-button {
+  width: 100%;
+  margin: 5px 0; /* Added margin for spacing */
+  padding: 15px 20px; /* Increased padding for better click area */
+  border: 2px solid #ddd; /* Slightly thicker border */
+  border-radius: 10px;
+  background-color: #fff; /* White background */
+  color: #000; /* Black text */
+  font-size: 1rem; /* Increased font size */
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions */
+}
 
-  }
-  .next-elected{
-    background-color: green;
-  }
-  
-  .back-button:hover, .next-button:hover {
-    background-color: #3e8e41;
-  }
+/* Hover State for Goal Button */
+.goal-button:hover {
+  background-color: #f0f0f0; /* Light gray background on hover */
+  border-color: #ccc; /* Darker border on hover */
+}
 
-  .nav-buttons{
-    display:flex;
-    justify-content: space-between;
-  }
+/* Selected State for Goal Button */
+.goal-button.elected {
+  background-color: #4caf50; /* Green background when selected */
+  color: #fff; /* White text when selected */
+  border-color: #4caf50; /* Green border when selected */
+}
+
+/* Navigation Buttons Styles */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; /* Added margin-top for spacing */
+}
+
+/* Individual Navigation Button Styles */
+.back-button,
+.next-button {
+  padding: 10px 20px; /* Padding for better click area */
+  border: none;
+  border-radius: 10px;
+  background-color: #4caf50; /* Green background */
+  color: #fff; /* White text */
+  font-size: 1rem; /* Increased font size */
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+/* Hover State for Navigation Buttons */
+.back-button:hover,
+.next-button:hover {
+  background-color: #3e8e41; /* Darker green on hover */
+}
+
+/* Additional Styles for Selected Next Button */
+.next-button.next-elected {
+  background-color: #3e8e41; /* Darker green background when next is selected */
+}
+
+/* Additional Styles */
+.note {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}

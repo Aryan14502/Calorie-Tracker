@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from '../../../axios';
 // import  Axios  from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import "./logintake.css";
@@ -26,8 +28,12 @@ const Wrapper = styled.div`
 `;
 
 function LogIntake() {
-  let totals = {};
-  let remaining = {};
+  // let totals = {};
+  const [totals,setTotals] = useState({});
+  const {user} = useAuth0();
+  // let remaining = {};
+  const [remaining,setRemaining ] = useState({});
+
   const [foodData, setFoodData] = useState([
     {
       id: "breakfast",
@@ -74,13 +80,23 @@ function LogIntake() {
 
   const location = useLocation();
   // const selectedFood = location.state?.selectedFood;
-  const[selectedFood,setSelectedFood] = useState(location.state?.selectedFood);
-  let servings = location.state?.servings; //int
-  let whichMeal = location.state?.value; //Add breakfast
+  const[selectedFood,setSelectedFood] = useState(location.state?.selectedFood || {});
+  const[ servings,setServings ]= useState(location.state?.servings); 
+  const [ whichMeal,setWhichMeal] = useState(location.state?.value); //Add breakfast
 
   
 
   // const [currentMeal,setCurrentMeal] = useState({});
+
+
+  function storeInLocalStorage(){
+    if(selectedFood)
+    {
+      localStorage.setItem(selectedFood.meal,JSON.stringify(selectedFood));
+
+    }
+
+  }
   
   const sendDataToDatabase = async () => {
     try {
@@ -112,29 +128,53 @@ function LogIntake() {
   //   }
   // };
 
+
+
   useEffect(() => {
+
+    selectedFood.user_Id = user?.sub;
+    selectedFood.date =new Date();
+
+    console.log(user)
 
 
     
     let saykey = "";
     if (whichMeal === "Add Breakfast") {
       saykey = "breakfast";
-      // selectedFood.meal= "breakfast";
+      selectedFood.meal= "breakfast";
       // console.log(selectedFood);
-      setForBreakFastTable(selectedFood);
+ 
     } else if (whichMeal === "Add Lunch") {
       saykey = "lunch";
-      setForLunchTable(selectedFood);
+      selectedFood.meal= "lunch";
+
     } else if (whichMeal === "Add Dinner") {
       saykey = "dinner";
-      setForDinnerTable(selectedFood);
-    } else {
+      selectedFood.meal= "dinner";
+
+    } else if(whichMeal === "Snack's Here"){
       saykey = "snacks";
-      setForSnackTable(selectedFood);
+      selectedFood.meal= "snacks";
+
+    }else{
+      console.log("")
     }
 
 
+
+    storeInLocalStorage();
+    console.log(selectedFood)
+
     sendDataToDatabase();
+// 
+    setForBreakFastTable(JSON.parse(localStorage.getItem("breakfast")))
+    setForLunchTable(JSON.parse(localStorage.getItem("lunch")))
+    setForDinnerTable(JSON.parse(localStorage.getItem("dinner")))
+    setForSnackTable(JSON.parse(localStorage.getItem("snacks")))
+
+
+    // fetchDataFromDatabase();
     
 
 
@@ -145,7 +185,7 @@ function LogIntake() {
 
       const meal = foodData.find((result) => result.id === saykey);
 
-      if (meal ) {
+      if (selectedFood && meal ) {
         meal.calories = selectedFood.calories;
         meal.carbs = selectedFood.carbs;
         meal.fat = selectedFood.fat;
@@ -159,17 +199,26 @@ function LogIntake() {
       }
     };
 
-    totals = calculateTotals();
+    calculateTotals();
 
-    remaining = {
+    setRemaining ({
       calories: totals.calories - dailyGoal.calories,
       carbs: totals.carbs - dailyGoal.carbs,
       fat: totals.fat - dailyGoal.fat,
       protein: totals.protein - dailyGoal.protein,
       sodium: totals.sodium - dailyGoal.sodium,
-      sugar: totals.sugar - dailyGoal.sugar,
-    };
+      sugar: totals.sugar - dailyGoal.sugar
+    }
+    );
+
+
   }, [selectedFood, servings, whichMeal]);
+
+
+
+
+
+
 
   // const handleFoodChange = (meal, nutrient, value) => {
   //   setFoodData((prevData) => ({
@@ -199,14 +248,23 @@ function LogIntake() {
       totalSugar += foodData[meal].sugar;
     }
 
-    return {
+    setTotals({
       calories: totalCalories,
       carbs: totalCarbs,
       fat: totalFat,
       protein: totalProtein,
       sodium: totalSodium,
-      sugar: totalSugar,
-    };
+      sugar: totalSugar
+    });
+
+    // return {
+    //   calories: totalCalories,
+    //   carbs: totalCarbs,
+    //   fat: totalFat,
+    //   protein: totalProtein,
+    //   sodium: totalSodium,
+    //   sugar: totalSugar,
+    // };
   };
 
   const dailyGoal = {
@@ -243,14 +301,14 @@ function LogIntake() {
         <h1>Food Tracker</h1>
 
         <div className="meal-section">
-          <h2>Breakfast</h2>
+          <h2><b>Breakfast</b></h2>
           <div className="food-item">
             {forBreakFastTable && forBreakFastTable.title ? (
-              <span>{forBreakFastTable.title}</span>
+              <b>{forBreakFastTable.title}</b>
             ) : (
-              <span>No food selected</span>
+              <b>No food selected</b>
             )}
-            <span>Servings : {servings}</span>
+            <b>Servings : {servings}</b>
 
             <div className="nutrition-info">
               <div className="nutrient">
@@ -302,50 +360,50 @@ function LogIntake() {
         {/* Lunch */}
 
         <div className="meal-section">
-          <h2>Lunch</h2>
+          <h2><b>Lunch</b></h2>
           <div className="food-item">
             {forLunchTable && forLunchTable.title ? (
-              <span>{forLunchTable.title}</span>
+              <b>{forLunchTable.title}</b>
             ) : (
-              <span>No food selected</span>
+              <b>No food selected</b>
             )}
-            <span>Servings : {servings}</span>
+            <b>Servings : {servings}</b>
 
             <div className="nutrition-info">
               <div className="nutrient">
                 <span className="nutrient-name">Calories</span>
                 <span className="nutrient-value">
-                  {forLunchTable.calories}
+                  {forLunchTable?.calories}
                 </span>
                 <span className="nutrient-unit">kcal</span>
               </div>
               <div className="nutrient">
                 <span className="nutrient-name">Carbs</span>
                 <span className="nutrient-value">
-                  {forLunchTable.carbs}
+                  {forLunchTable?.carbs}
                 </span>
                 {/* <span className="nutrient-unit">g</span> */}
               </div>
               <div className="nutrient">
                 <span className="nutrient-name">Fat</span>
-                <span className="nutrient-value">{forLunchTable.fat}</span>
+                <span className="nutrient-value">{forLunchTable?.fat}</span>
                 {/* <span className="nutrient-unit">g</span> */}
               </div>
               <div className="nutrient">
                 <span className="nutrient-name">Protein</span>
                 <span className="nutrient-value">
-                {forLunchTable.protein}
+                {forLunchTable?.protein}
                 </span>
                 {/* <span className="nutrient-unit">g</span> */}
               </div>
               <div className="nutrient">
                 <span className="nutrient-name">Sodium</span>
-                <span className="nutrient-value">{forLunchTable.sodium}</span>
+                <span className="nutrient-value">{forLunchTable?.sodium}</span>
                 {/* <span className="nutrient-unit">mg</span> */}
               </div>
               <div className="nutrient">
                 <span className="nutrient-name">Sugar</span>
-                <span className="nutrient-value">{forLunchTable.sugar}</span>
+                <span className="nutrient-value">{forLunchTable?.sugar}</span>
                 {/* <span className="nutrient-unit">g</span> */}
               </div>
             </div>
@@ -360,50 +418,50 @@ function LogIntake() {
 
 
         <div className="meal-section">
-          <h2>Dinner</h2>
+          <h2><b>Dinner</b></h2>
           <div className="food-item">
             {forDinnerTable && forDinnerTable.title ? (
-              <span>{forDinnerTable.title}</span>
+              <b>{forDinnerTable.title}</b>
             ) : (
-              <span>No food selected</span>
+              <b>No food selected</b>
             )}
-            <span>Servings : {servings}</span>
+            <b>Servings : {servings}</b>
 
             <div className="nutrition-info">
               <div className="nutrient">
                 <span className="nutrient-name">Calories</span>
                 <span className="nutrient-value">
-                  {forDinnerTable.calories}
+                  {forDinnerTable?.calories}
                 </span>
                 <span className="nutrient-unit">kcal</span>
               </div>
               <div className="nutrient">
                 <span className="nutrient-name">Carbs</span>
                 <span className="nutrient-value">
-                  {forDinnerTable.carbs}
+                  {forDinnerTable?.carbs}
                 </span>
                 {/* <span className="nutrient-unit">g</span> */}
               </div>
               <div className="nutrient">
                 <span className="nutrient-name">Fat</span>
-                <span className="nutrient-value">{forDinnerTable.fat}</span>
+                <span className="nutrient-value">{forDinnerTable?.fat}</span>
                 {/* <span className="nutrient-unit">g</span> */}
               </div>
               <div className="nutrient">
                 <span className="nutrient-name">Protein</span>
                 <span className="nutrient-value">
-                  {forDinnerTable.protein}
+                  {forDinnerTable?.protein}
                 </span>
                 {/* <span className="nutrient-unit">g</span> */}
               </div>
               <div className="nutrient">
                 <span className="nutrient-name">Sodium</span>
-                <span className="nutrient-value">{forDinnerTable.sodium}</span>
+                <span className="nutrient-value">{forDinnerTable?.sodium}</span>
                 {/* <span className="nutrient-unit">mg</span> */}
               </div>
               <div className="nutrient">
                 <span className="nutrient-name">Sugar</span>
-                <span className="nutrient-value">{forDinnerTable.sugar}</span>
+                <span className="nutrient-value">{forDinnerTable?.sugar}</span>
                 {/* <span className="nutrient-unit">g</span> */}
               </div>
             </div>
@@ -415,14 +473,14 @@ function LogIntake() {
         </div>
 
         <div className="meal-section">
-          <h2>Snack's Here</h2>
+          <h2><b>Snack's Here</b></h2>
           <div className="food-item">
             {forSnackTable && forSnackTable.title ? (
-              <span>{forSnackTable.title}</span>
+              <b>{forSnackTable.title}</b>
             ) : (
-              <span>No food selected</span>
+              <b>No food selected</b>
             )}
-            <span>Servings : {servings}</span>
+            <b>Servings : {servings}</b>
 
             <div className="nutrition-info">
               <div className="nutrient">

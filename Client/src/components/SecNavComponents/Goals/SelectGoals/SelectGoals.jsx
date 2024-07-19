@@ -1,8 +1,10 @@
 import React from "react";
 import "./selectgoals.css";
-import { useState } from "react";
+import { useState ,useContext} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import UsersInfoContext from "../../../../contexts/usersInfoContext";
+
 
 const Container = styled.div`
 
@@ -59,7 +61,12 @@ function SelectGoals() {
     }
   };
 
+  const {usersData,setUsersData} = useContext(UsersInfoContext);
+
   const handleNextClick = () => {
+    usersData.users_goal = goal;
+    console.log(usersData);
+
     // Navigate to the next route (/diet) when the NEXT button is clicked
     navigate("/motivating", { state: { goal } });
   };
