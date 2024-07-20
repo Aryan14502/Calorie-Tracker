@@ -92,6 +92,7 @@ function Dashboard() {
 
   const [recommendations, setRecommendations] = useState([]);
   const [progress, setProgress] = useState({});
+  const [mealData,setMealData] = useState({});
   
 
   useEffect(() => {
@@ -99,9 +100,10 @@ function Dashboard() {
       try {
         const userId = user?.sub;
         console.log(userId)
-        const response = await axios.get(`/recommend?user_id=${userId}`);
-        const data = response.data;
-        console.log(data)
+        const response = await axios.get(`http://localhost:5000/recommend?user_id=${userId}`);
+        // const data = response;
+        console.log(response.data);
+        setMealData(response.data);
         
         // setRecommendations(response.data.recommendations);
         // setProgress(response.data.progress);
@@ -189,7 +191,7 @@ function Dashboard() {
         </FoodFactContainer>
         <FlexWrap>
           <CategoryChart what={"Carbohydrates"} data={data} />
-          <AiComponent progress={progress} recommendations={recommendations} />
+          <AiComponent mealPlanData ={mealData} />
           {/* <CategoryChart what={"Proteins"}  data={data}/>
           <CategoryChart what={"Fats"}  data={data}/> */}
         </FlexWrap>

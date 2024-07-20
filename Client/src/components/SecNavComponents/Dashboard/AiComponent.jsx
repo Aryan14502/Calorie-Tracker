@@ -1,6 +1,8 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import styled from "styled-components";
-import './aicomponent.css'
+import './aicomponent.css';
+import { IonButton, IonLoading, useIonLoading } from '@ionic/react';
+
 const Card = styled.div`
   flex: 1;
   min-width: 280px;
@@ -51,12 +53,27 @@ const ListItem = styled.li`
   color: #333;
   margin-bottom: 8px;
 `;
-function AiComponent({ progress, recommendations }) {
+function AiComponent({ mealPlanData }) {
+
+  console.log("hello")
+  console.log(mealPlanData)
+  const [isData, setData] = useState(false);
+
+  useEffect(()=>{
+  
+
+    setTimeout(()=>{
+
+      setData(!isData)
+    },3000)
+
+  },[])
+
   return (
     <Card>
-      {/* <div className="meal-plan">
-        <h1 className="title">User Recommendations:</h1>
-        <p className="daily-calorie-needs">
+      <div className="meal-plan">
+        <h1 className="title ">User Recommendations:</h1>
+        {/* <p className="daily-calorie-needs">
           Daily Calorie Intake: {dailyCalorieNeeds} calories
         </p>
         <h2 className="macro-nutrient-title">Macronutrient Breakdown:</h2>
@@ -73,35 +90,61 @@ function AiComponent({ progress, recommendations }) {
             Fat: {macroNutrientGoals[2]}-
             {Math.round(macroNutrientGoals[2] * 1.2)} grams
           </li>
-        </ul>
+        </ul> */}
+
+        
+
+
+
+
+
+
         <h2 className="meal-plan-title">Meal Plan:</h2>
+
+        {isData ? (
         <ul className="meal-plan-list">
           <li>
-            Breakfast: {mealPlanData.breakfast.calories} calories,{" "}
-            {mealPlanData.breakfast.protein}g protein,{" "}
-            {mealPlanData.breakfast.carbohydrates}g carbohydrates,{" "}
-            {mealPlanData.breakfast.fat}g fat
+            
+           
+            Breakfast: {mealPlanData.breakfast?.calories} calories,{" "}
+      
+            {mealPlanData.breakfast?.protein}g protein,{" "}
+            {mealPlanData.breakfast?.carbohydrates}g carbohydrates,{" "}
+            {mealPlanData.breakfast?.fat}g fat
+
           </li>
           <li>
-            Lunch: {mealPlanData.lunch.calories} calories,{" "}
-            {mealPlanData.lunch.protein}g protein,{" "}
-            {mealPlanData.lunch.carbohydrates}g carbohydrates,{" "}
-            {mealPlanData.lunch.fat}g fat
+            Lunch: {mealPlanData.lunch?.calories} calories,{" "}
+            {mealPlanData.lunch?.protein}g protein,{" "}
+            {mealPlanData.lunch?.carbohydrates}g carbohydrates,{" "}
+            {mealPlanData.lunch?.fat}g fat
+
           </li>
           <li>
-            Dinner: {mealPlanData.dinner.calories} calories,{" "}
-            {mealPlanData.dinner.protein}g protein,{" "}
-            {mealPlanData.dinner.carbohydrates}g carbohydrates,{" "}
-            {mealPlanData.dinner.fat}g fat
+            Dinner: {mealPlanData.dinner?.calories} calories,{" "}
+            {mealPlanData.dinner?.protein}g protein,{" "}
+            {mealPlanData.dinner?.carbohydrates}g carbohydrates,{" "}
+            {mealPlanData.dinner?.fat}g fat
+
           </li>
           <li>
-            Snacks: {mealPlanData.snacks[0].calories} calories,{" "}
-            {mealPlanData.snacks[0].protein}g protein,{" "}
-            {mealPlanData.snacks[0].carbohydrates}g carbohydrates,{" "}
-            {mealPlanData.snacks[0].fat}g fat
+            Snacks: {mealPlanData.snacks?.calories} calories,{" "}
+            {mealPlanData.snacks?.protein}g protein,{" "}
+            {mealPlanData.snack?.carbohydrates}g carbohydrates,{" "}
+            {mealPlanData.snacks?.fat}g fat
+
           </li>
+      
         </ul>
-      </div> */}
+        ):(
+          <div>
+
+          <IonButton id="open-loading">Show Loading</IonButton>
+          <IonLoading trigger="open" message="Loading..." duration={3000} spinner="circles" />
+          </div>
+        
+        )}
+      </div>
     </Card>
   );
 }

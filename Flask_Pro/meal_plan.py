@@ -45,13 +45,12 @@ class MealPlan:
                 'carbohydrates': dinner_carbohydrates,
                 'fat': dinner_fat
             },
-            'snacks': [
-                {
+            'snacks': {
                     'calories': snack_calories,
                     'protein': snack_protein,
                     'carbohydrates': snack_carbohydrates,
                     'fat': snack_fat
-                }
-            ]
+            },
+            
         }
         return meal_plan
