@@ -2,48 +2,43 @@
 // nppm i express => To install the express framework
 // npm i -g nodemon => To install the nodemon Package
 //Extensions SaveTyping and SaveCoding
-// cntrl c To stop the Server , and to avoid Ctrnl c we downloaded nodemon package 
+// cntrl c To stop the Server , and to avoid Ctrnl c we downloaded nodemon package
 // import { auth0 } from './auth0';
 // const  auth0  = require('./auth0');
-const express=require('express');
+const express = require("express");
 const router = express.Router();
-require ('./db/connection');
-const app=express();
-const bcrypt = require('bcryptjs');
+require("./db/connection");
+const app = express();
+const bcrypt = require("bcryptjs");
 
-const cors = require('cors');
+const cors = require("cors");
 app.use(cors());
-app.use(cors({
-  origin: 'http://localhost:5000', // allow requests from this origin
-  credentials: true, // allow credentials (e.g. cookies) to be sent
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000", // allow requests from this origin
+    credentials: true, // allow credentials (e.g. cookies) to be sent
+  })
+);
 app.use(express.json());
 // const bodyParser = require('body-parser');
 // app.use(bodyParser.json());
 
 // ===============================================================================================================================
 
-
-const FoodLog = require('./models/foodLog');
-const DailyFoodLog = require('./models/dailyFoodLog')
-const Users = require('./models/users');
-const UsersInfo = require('./models/usersInfo')
+const FoodLog = require("./models/foodLog");
+const DailyFoodLog = require("./models/dailyFoodLog");
+const Users = require("./models/users");
+const UsersInfo = require("./models/usersInfo");
 // ===============================================================================================================================
 
-
-
-app.post('/about',(req,res)=>{
+app.post("/about", (req, res) => {
   res.send("hello");
-})
-
-
+});
 
 // ===============================================================================================================================
 
-
-app.post('/dailyfoodlog', async (req, res) => {
-  try 
-  {
+app.post("/dailyfoodlog", async (req, res) => {
+  try {
     const { meal, ...logFoodItems } = req.body;
 
     const existingFoodLog = await DailyFoodLog.findOne({ meal });
@@ -51,27 +46,24 @@ app.post('/dailyfoodlog', async (req, res) => {
     if (!existingFoodLog) {
       const newFoodLog = new DailyFoodLog({ meal, ...logFoodItems });
       await newFoodLog.save();
-      
-      res.status(201).json({ message: 'Food Logged Successfully' });
+
+      res.status(201).json({ message: "Food Logged Successfully" });
     } else {
       // existingFoodLog.logFoodItems = logFoodItems;
       Object.assign(existingFoodLog, logFoodItems);
       // console.log(existingFoodLog);
       await existingFoodLog.save();
-      res.status(201).json({ message: 'Food log Updated Successfully' });
+      res.status(201).json({ message: "Food log Updated Successfully" });
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Error Logging Food' });
+    res.status(500).json({ message: "Error Logging Food" });
   }
 });
 
-
-
 // ===============================================================================================================================
 
-
-app.post('/newuseraccount', async (req, res) => {
+app.post("/newuseraccount", async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
   // const usersData = req.body;
 
@@ -87,7 +79,7 @@ app.post('/newuseraccount', async (req, res) => {
   // Check if user already exists
   const existingUser = await Users.findOne({ email });
   if (existingUser) {
-    return res.status(400).send({ message: 'User already exists' });
+    return res.status(400).send({ message: "User already exists" });
   }
 
   // Hash password
@@ -113,7 +105,7 @@ app.post('/newuseraccount', async (req, res) => {
 
     // Send response with token and user data
     res.status(201).send({
-      message: 'Account created successfully',
+      message: "Account created successfully",
       // token,
       user: {
         id: user._id,
@@ -123,38 +115,26 @@ app.post('/newuseraccount', async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send({ message: 'Error creating user' });
+    res.status(500).send({ message: "Error creating user" });
   }
 });
 
-
 // ===============================================================================================================================
 
-
-app.post('/userlogin', async (req, res) => 
-{
-
-
+app.post("/userlogin", async (req, res) => {
   const { email, password } = req.body;
-
-
 
   // Validate user input
 
-
-
-  if (!email || !password) 
-  {
-   return res.status(400).send({ message: 'Please fill in all fields' });
+  if (!email || !password) {
+    return res.status(400).send({ message: "Please fill in all fields" });
   }
 
-  // Check if user exists                                                   
-  const user = await Users.findOne({ email });                     
-  if (!user) 
-  {
-    return res.status(400).send({ message: 'User not found' });
+  // Check if user exists
+  const user = await Users.findOne({ email });
+  if (!user) {
+    return res.status(400).send({ message: "User not found" });
   }
-
 
   // Check if password is correct
   // const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -168,8 +148,8 @@ app.post('/userlogin', async (req, res) =>
   // });
 
   // Send response with token and user data
-  res.status(201).send({                                          
-    message: 'Login successful',
+  res.status(201).send({
+    message: "Login successful",
     // token,
     // user: {
     //   // id: user._id,
@@ -178,17 +158,13 @@ app.post('/userlogin', async (req, res) =>
     // },
   });
 
-// catch(err){
-//   console.error(err);
-//   res.status(500).send({ message: 'Error creating user' });
-// }
-
-
+  // catch(err){
+  //   console.error(err);
+  //   res.status(500).send({ message: 'Error creating user' });
+  // }
 });
 
 // ===============================================================================================================================
-
-
 
 // const auth0 = require('auth0');
 
@@ -223,147 +199,218 @@ app.post('/userlogin', async (req, res) =>
 // });
 // ===============================================================================================================================
 
-  // app.post('/foodlog',async (req,res)=>{
-  //   try{
+// app.post('/foodlog',async (req,res)=>{
+//   try{
 
-  //     // const {calories,carbs,fat,id,image,imageType,protein,title}  = req.body;
-  //     // const dailyFoodLogItem = new DailyFoodLog(req.body );
-  //     // await dailyFoodLogItem.save();
-  //     res.status(201).json({ message: 'Yesterdays Data Saved Successfully' });
-  //   }catch (err) {
-  //     console.error(err);
-  //     res.status(500).json({ message: 'Error creating food log item' });
-  //   }
-  // })
-
-
+//     // const {calories,carbs,fat,id,image,imageType,protein,title}  = req.body;
+//     // const dailyFoodLogItem = new DailyFoodLog(req.body );
+//     // await dailyFoodLogItem.save();
+//     res.status(201).json({ message: 'Yesterdays Data Saved Successfully' });
+//   }catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Error creating food log item' });
+//   }
+// })
 
 // ===============================================================================================================================
 
 // app.get('/foodLog', (req, res) => {
-    // try {
-        // res.send(req.body)
+// try {
+// res.send(req.body)
 
- 
-        // res.send(req.body)
-   
-    //   const foodLog = new FoodLog(req.body);
-  
-     
-    //   await foodLog.save();
-    //   console.log("Data Saved Successfully");
-  
+// res.send(req.body)
 
-    //   res.status(201).send({ message: 'FoodLog created successfully' });
-    // } catch (err) {
-        
-    //   res.status(500).send({ message: 'Error creating ' });
-    // }
+//   const foodLog = new FoodLog(req.body);
+
+//   await foodLog.save();
+//   console.log("Data Saved Successfully");
+
+//   res.status(201).send({ message: 'FoodLog created successfully' });
+// } catch (err) {
+
+//   res.status(500).send({ message: 'Error creating ' });
+// }
 //   });
-
 
 // ===============================================================================================================================
 
-
-app.post('/checkusersinfo', async (req, res) => {
+app.post("/checkusersinfo", async (req, res) => {
   const { userId } = req.body;
-  console.log(userId)
+  console.log(userId);
 
   try {
     const isUser = await UsersInfo.findOne({ userId });
     if (isUser) {
-      console.log(isUser.users_goal)
+      console.log(isUser.users_goal);
       res.status(200).json(isUser);
       // res.send(isUser);
     } else {
-      res.status(404).json({ message: 'User not found' });
+      console.log("else i am");
+      res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.log("catch i am");
+    res.status(500).json({ message: "Server error", error });
   }
 });
 
 // ===============================================================================================================================
 
-app.post('/saveusersinfo', async (req, res) => {
+app.post("/saveusersinfo", async (req, res) => {
   const usersData = req.body;
 
-  const requiredFields = [ 'gender', 'birthdate', 'country'];
-
-  for (const field of requiredFields) {
-    if (!usersData[field]) {
-      return res.status(400).json({ message: `Please fill out all fields. Missing: ${field}` });
-    }
-  }
-
   try {
-    const newUser = new UsersInfo(usersData);
-    await newUser.save();
-    res.status(200).json({ message: 'User details saved successfully' });
+    const userId = req.body.userId;
+    const existingUser = await UsersInfo.findOne({ userId });
+
+    if (existingUser) {
+      // update existing user
+      await UsersInfo.findOneAndUpdate({ userId }, usersData, { new: true });
+      res.status(200).json({ message: "User details updated successfully" });
+    } else {
+      // create new user
+      const newUser = new UsersInfo(usersData);
+      await newUser.save();
+      res.status(200).json({ message: "User details saved successfully" });
+    }
   } catch (error) {
-    console.error('Error saving user details:', error);
-    res.status(500).json({ message: 'Error saving user details', error });
+    console.error("Error saving user details:", error);
+    res.status(500).json({ message: "Error saving user details", error });
   }
 });
 
-
 // ===============================================================================================================================
 
-
-const cron = require('node-cron');
-const dailyFoodLogMapper = require('./utils/mappers/dailyFoodLogMapper');
-
+const cron = require("node-cron");
+const dailyFoodLogMapper = require("./utils/mappers/dailyFoodLogMapper");
 
 async function getDailyFoodLogData() {
-
-    const dailyFoodLogs = await DailyFoodLog.find().exec();
-    return dailyFoodLogs;
-
-  }
-
-
-
+  const dailyFoodLogs = await DailyFoodLog.find().exec();
+  return dailyFoodLogs;
+}
 
 async function scheduleDailyFoodLog() {
-    try {
-      const dailyFoodLogData = await getDailyFoodLogData();
-      // console.log(dailyFoodLogData)
-      const transformedData = dailyFoodLogMapper(dailyFoodLogData);
-      console.log("transformedDat",transformedData)
+  try {
+    const dailyFoodLogData = await getDailyFoodLogData();
+    // console.log(dailyFoodLogData)
+    const transformedData = dailyFoodLogMapper(dailyFoodLogData);
+    console.log("transformedDat", transformedData);
 
-      transformedData.forEach((tranData)=>{
-          console.log("tranData : ",tranData)
-        const foodLog = new FoodLog(tranData);
-        foodLog.save();
-      })
+    transformedData.forEach((tranData) => {
+      console.log("tranData : ", tranData);
+      const foodLog = new FoodLog(tranData);
+      foodLog.save();
+    });
 
-      // const foodLog = new FoodLog(transformedData);
-      // await foodLog.save();
-      console.log('Daily food log saved successfully');
-    } catch (error) {
-      console.error('Error saving daily food log:', error);
-    }
-    console.log("Good night")
+    // const foodLog = new FoodLog(transformedData);
+    // await foodLog.save();
+    console.log("Daily food log saved successfully");
+  } catch (error) {
+    console.error("Error saving daily food log:", error);
   }
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  
-  cron.schedule('0 0 0 * * *', scheduleDailyFoodLog, {
-    tz: timeZone
-  });
-  // cron.schedule('* * * * * *', scheduleDailyFoodLog);
+  console.log("Good night");
+}
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+cron.schedule("0 15 * * * *", scheduleDailyFoodLog, {
+  tz: timeZone,
+});
+// cron.schedule('* * * * * *', scheduleDailyFoodLog);
 // cron.schedule('*/1 * * * *',  () => {
 //     scheduleDailyFoodLog();});
-
-
-
-
 
 // cron.schedule('* * * * * *', () => {
 //   console.log('Running scheduling script...');
 //   // Your scheduling logic here
 // });
 
+// ===============================================================================================================================
 
+app.get("/fetchlastmonthdata", async (req, res) => {
+  const userId = req.query.user_id;
+  console.log(userId);
+  if (!userId) {
+    return res.status(400).send({ error: "User ID is required" });
+  }
+
+  const currentDate = new Date();
+  const currentDay = currentDate.getDate();
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+
+  const lastMonthDate = new Date(currentYear, currentMonth - 1, currentDay);
+  console.log(currentDate);
+  console.log(lastMonthDate);
+
+  try {
+    const lastMonthData = await FoodLog.find({
+      user_Id: userId,
+      date: {
+        $gte: lastMonthDate,
+        $lt: currentDate,
+      },
+    });
+
+    // Calculate total calories for each week
+    const weeks = {};
+    lastMonthData.forEach((log) => {
+      const logDate = log.date;
+      const weekNumber = getWeek(logDate);
+      const weekKey = `week${weekNumber}`;
+      weeks[weekKey] = (weeks[weekKey] || 0) + log.totalCalories;
+    });
+
+    const reformattedWeeks = {};
+    let weekNumber = 1;
+    Object.entries(weeks).forEach(([key, value]) => {
+      reformattedWeeks[`week${weekNumber}`] = value;
+      weekNumber++;
+    });
+
+    res.json(reformattedWeeks);
+  } catch (error) {
+    console.error("Error fetching Last Month data:", error);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+});
+
+// Helper function to get the week number from a date
+function getWeek(date) {
+  const onejan = new Date(date.getFullYear(), 0, 1);
+  return Math.ceil(((date - onejan) / 86400000 + onejan.getDay() + 1) / 7);
+}
+
+// app.get('/fetchlastmonthdata', async (req, res) => {
+//   const userId = req.query.user_id;
+//   console.log(userId)
+//   if (!userId) {
+//     return res.status(400).send({ error: 'User ID is required' });
+//   }
+
+//   const currentDate = new Date();
+//   const currentDay = currentDate.getDate();
+//   const currentMonth = currentDate.getMonth();
+//   const currentYear = currentDate.getFullYear();
+
+//   const lastMonthDate = new Date(currentYear, currentMonth - 1, currentDay);
+//   console.log(currentDate);
+//   console.log(lastMonthDate);
+
+//   try {
+//     const lastMonthData = await FoodLog.find({
+//       user_Id: userId,
+//       date: {
+//         $gte: lastMonthDate,
+//         $lt: currentDate
+//       },
+//     });
+
+//     res.json(lastMonthData);
+//   } catch (error) {
+//     console.error("Error fetching Last Month data:", error);
+//     res.status(500).send({ error: 'Internal Server Error' });
+//   }
+// });
 
 // ===============================================================================================================================
 
@@ -374,25 +421,18 @@ async function scheduleDailyFoodLog() {
 
 //  const bcrypt = require('bcrypt');
 
-
 // app.get('/home',(req,resp)=>{
 //     resp.send("This is Home Page");
 
 // });
 
-
 // app.get('/about',(req,resp)=>{
 //     resp.send("This is About Page");
 // });
 
-
 // app.get('/contact',(req,resp)=>{
 //     resp.send("This is Contact Page");
 // });
-
-
-
-
 
 // ===============================================================================================================================
 
@@ -404,7 +444,7 @@ async function scheduleDailyFoodLog() {
 // //     if(req.body.password==req.body.cpassword)
 // //     {
 // //     console.log('Done');
-    
+
 // //     }
 
 // //     if(req.body.name=="Pratik" && req.body.password=="138746")
@@ -422,11 +462,8 @@ async function scheduleDailyFoodLog() {
 // //     var n2=Number(req.body.b);
 // //     var result=n1+n1;
 
-
-    
 // //     console.log('The result is :'+result);
 // //     res.send("The Result is :" + result);
-
 
 // // });
 // ===============================================================================================================================
@@ -442,7 +479,7 @@ async function scheduleDailyFoodLog() {
 //     console.log(email);
 //     console.log(password);
 //     console.log(cpassword);
-    
+
 //     const template=new user({
 //         name,
 //         email,
@@ -458,8 +495,7 @@ async function scheduleDailyFoodLog() {
 //     else if(password!=cpassword){
 //         res.statusCode(401).json("password and confirmPassword is not Matching");
 //         res.send("password and confirmPassword is not Matching");
-        
-        
+
 //     }
 //     else{
 //         console.log("Details are filled Perfectly");
@@ -477,14 +513,8 @@ async function scheduleDailyFoodLog() {
 // })
 // ===============================================================================================================================
 
-
-
-
-
-app.get('*',(req,resp)=>{
-    resp.send("Error page");    
-
-
+app.get("*", (req, resp) => {
+  resp.send("Error page");
 });
 
 // ===============================================================================================================================
@@ -524,8 +554,6 @@ app.get('*',(req,resp)=>{
 // })
 // ===============================================================================================================================
 
-
-app.listen(3001,()=>{
-    console.log('My server is Running');
-
+app.listen(3001, () => {
+  console.log("My server is Running");
 });

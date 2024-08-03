@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useContext } from "react";
 import { useState } from "react";
 import axios from '../../../axios';
 // import  Axios  from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
+import UsersInfoContext from "../../../contexts/usersInfoContext";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -14,6 +15,8 @@ const Container = styled.div`
   justify-content: center;
   padding: 22px 0px;
   overflow-y: scroll;
+  background: linear-gradient(45deg, #E6E6FA, #D8BFD8, #E0B0FF);
+
 `;
 
 const Wrapper = styled.div`
@@ -24,54 +27,61 @@ const Wrapper = styled.div`
   gap: 22px;
   @media (max-width: 600px) {
     gap: 12px;
-  }
+  };
+  justify-cpntent: center;
+  // border: 1px solid black;
+  // overflow-y: auto;
+  // scrollbar-widh: none;
+  
+}
 `;
 
 function LogIntake() {
-  // let totals = {};
+  
   const [totals,setTotals] = useState({});
   const {user} = useAuth0();
-  // let remaining = {};
   const [remaining,setRemaining ] = useState({});
+  const foodData = ["breakfast", "lunch", "dinner", "snacks"];
+  const {remainingGoal,setRemainingGoal} = useContext(UsersInfoContext)
 
-  const [foodData, setFoodData] = useState([
-    {
-      id: "breakfast",
-      calories: 0,
-      carbs: 6,
-      fat: 0,
-      protein: 0,
-      sodium: 0,
-      sugar: 0,
-    },
-    {
-      id: "lunch",
-      calories: 10242,
-      carbs: 1613,
-      fat: 83,
-      protein: 504,
-      sodium: 0,
-      sugar: 0,
-    },
-    {
-      id: "dinner",
-      calories: 0,
-      carbs: 0,
-      fat: 0,
-      protein: 0,
-      sodium: 0,
-      sugar: 0,
-    },
-    {
-      id: "snacks",
-      calories: 0,
-      carbs: 0,
-      fat: 0,
-      protein: 0,
-      sodium: 0,
-      sugar: 0,
-    },
-  ]);
+  // const [foodData, setFoodData] = useState([
+  //   {
+  //     id: "breakfast",
+  //     calories: 0,
+  //     carbs: 6,
+  //     fat: 0,
+  //     protein: 0,
+  //     sodium: 0,
+  //     sugar: 0,
+  //   },
+  //   {
+  //     id: "lunch",
+  //     calories: 10242,
+  //     carbs: 1613,
+  //     fat: 83,
+  //     protein: 504,
+  //     sodium: 0,
+  //     sugar: 0,
+  //   },
+  //   {
+  //     id: "dinner",
+  //     calories: 0,
+  //     carbs: 0,
+  //     fat: 0,
+  //     protein: 0,
+  //     sodium: 0,
+  //     sugar: 0,
+  //   },
+  //   {
+  //     id: "snacks",
+  //     calories: 0,
+  //     carbs: 0,
+  //     fat: 0,
+  //     protein: 0,
+  //     sodium: 0,
+  //     sugar: 0,
+  //   },
+  // ]);
 
   const [forBreakFastTable, setForBreakFastTable] = useState({});
   const [forLunchTable, setForLunchTable] = useState({});
@@ -133,7 +143,11 @@ function LogIntake() {
   useEffect(() => {
 
     selectedFood.user_Id = user?.sub;
-    selectedFood.date =new Date();
+    const currentDate = new Date();
+    // const currentDay = currentDate.getDate();
+    // const currentMonth = currentDate.getMonth();
+    // const currentYear = currentDate.getFullYear();
+    selectedFood.date =currentDate;
 
     console.log(user)
 
@@ -178,42 +192,129 @@ function LogIntake() {
     
 
 
-    const setDataInMeals = (saykey) => {
-      // console.log(`key in setDataInMeal = ${saykey}`);
-      // for (const meal in foodData){
-      //   console.log(meal.carbs)
+    // const setDataInFoodData = (saykey) => {
+    //   // console.log(`key in setDataInMeal = ${saykey}`);
+    //   // for (const meal in foodData){
+    //   //   console.log(meal.carbs)
 
-      const meal = foodData.find((result) => result.id === saykey);
 
-      if (selectedFood && meal ) {
-        meal.calories = selectedFood.calories;
-        meal.carbs = selectedFood.carbs;
-        meal.fat = selectedFood.fat;
-        meal.protein = selectedFood.protein;
-        meal.sodium = selectedFood.sodium;
-        meal.sugar = selectedFood.sugar;
+    //   for (const meal in foodData) {
+    //     mealStored = JSON.parse(localStorage.getItem(meal.id))
+    //     if(mealStored){
+
+    //     }
+    //     totalCalories += foodData[meal].calories;
+    //     totalCarbs += foodData[meal].carbs;
+    //     totalFat += foodData[meal].fat;
+    //     totalProtein += foodData[meal].protein;
+    //     totalSodium += foodData[meal].sodium;
+    //     totalSugar += foodData[meal].sugar;
+    //   }
+
+    //   const meal = foodData.find((result) => result.id === saykey);
+    //   console.log("meal",meal);
+
+    //   console.log("foodDaTA",foodData);
+
+    //   // if (meal ) {
+    //   //   foodData[meal].calories = selectedFood.calories;
+    //   //   foodData[meal].carbs = selectedFood.carbs;
+    //   //   foodData[meal].fat = selectedFood.fat;
+    //   //   foodData[meal].protein = selectedFood.protein;
+    //   //   foodData[meal].sodium = selectedFood.sodium;
+    //   //   foodData[meal].sugar = selectedFood.sugar;
 
   
-      } else {
-        console.log("");
+    //   // } else {
+    //   //   console.log("");
+    //   // }
+    // };
+    // setDataInFoodData();
+
+    const calculateTotals = () => {
+      let totalCalories = 1;
+      let totalCarbs = 1;
+      let totalFat = 1;
+      let totalProtein = 1;
+      let totalSodium = 0;
+      let totalSugar = 0;
+     
+  
+      for (let i=0;i<foodData.length;i++) {
+
+        // const mealStored = JSON.parse(localStorage.getItem(meal.id))
+        console.log("meal",foodData[i])
+        const mealStored = JSON.parse(localStorage.getItem(foodData[i]))
+        // console.log("meal id",meal.id)
+        // console.log("meal Stored",mealStored);
+        if(mealStored){
+          mealStored.calories ? totalCalories += mealStored.calories : totalCalories += 0;
+          mealStored.carbs ? totalCarbs += parseFloat(mealStored.carbs.replace('g', '')) :totalCarbs +=0 ;
+          mealStored.fat ? totalFat += parseFloat(mealStored.fat.replace('g', '')) :totalFat +=0 ;
+          mealStored.protein ? totalProtein += parseFloat(mealStored.protein.replace('g', '')) :totalProtein +=0 ;
+         
+          // totalSodium += parseFloat(mealStored.sodium.replace('g', ''));
+          // totalSugar += parseFloat(mealStored.sugar.replace('g', ''));
+        }
       }
+  
+      setTotals({
+        calories: totalCalories,
+        carbs: totalCarbs,
+        fat: totalFat,
+        protein: totalProtein,
+        sodium: totalSodium,
+        sugar: totalSugar
+      });
+      localStorage.setItem('totalnutrition',JSON.stringify({
+        calories: totalCalories,
+        carbs: totalCarbs,
+        fat: totalFat,
+        protein: totalProtein,
+        sodium: totalSodium,
+        sugar: totalSugar
+      }))
+  
+      // return {
+      //   calories: totalCalories,
+      //   carbs: totalCarbs,
+      //   fat: totalFat,
+      //   protein: totalProtein,
+      //   sodium: totalSodium,
+      //   sugar: totalSugar,
+      // };
     };
 
     calculateTotals();
 
+    
+
+
     setRemaining ({
-      calories: totals.calories - dailyGoal.calories,
-      carbs: totals.carbs - dailyGoal.carbs,
+      calories: dailyGoal.calories - totals.calories ,
+      carbs:  dailyGoal.carbs - totals.carbs,
       fat: totals.fat - dailyGoal.fat,
-      protein: totals.protein - dailyGoal.protein,
-      sodium: totals.sodium - dailyGoal.sodium,
-      sugar: totals.sugar - dailyGoal.sugar
+
+      protein: dailyGoal.protein -  totals.protein,
+      sodium: dailyGoal.sodium - totals.sodium ,
+      sugar:  dailyGoal.sugar - totals.sugar
     }
     );
+    setRemainingGoal(remaining);
+
+
 
 
   }, [selectedFood, servings, whichMeal]);
 
+  const dailyGoal = {
+    calories: 1920,
+    carbs: 240,
+    fat: 64,
+    protein: 96,
+    sodium: 2300,
+    sugar: 72,
+  };
 
 
 
@@ -230,51 +331,7 @@ function LogIntake() {
   //   }));
   // };
 
-  const calculateTotals = () => {
-    let totalCalories = 0;
-    let totalCarbs = 0;
-    let totalFat = 0;
-    let totalProtein = 0;
-    let totalSodium = 0;
-    let totalSugar = 0;
-   
 
-    for (const meal in foodData) {
-      totalCalories += foodData[meal].calories;
-      totalCarbs += foodData[meal].carbs;
-      totalFat += foodData[meal].fat;
-      totalProtein += foodData[meal].protein;
-      totalSodium += foodData[meal].sodium;
-      totalSugar += foodData[meal].sugar;
-    }
-
-    setTotals({
-      calories: totalCalories,
-      carbs: totalCarbs,
-      fat: totalFat,
-      protein: totalProtein,
-      sodium: totalSodium,
-      sugar: totalSugar
-    });
-
-    // return {
-    //   calories: totalCalories,
-    //   carbs: totalCarbs,
-    //   fat: totalFat,
-    //   protein: totalProtein,
-    //   sodium: totalSodium,
-    //   sugar: totalSugar,
-    // };
-  };
-
-  const dailyGoal = {
-    calories: 1920,
-    carbs: 240,
-    fat: 64,
-    protein: 96,
-    sodium: 2300,
-    sugar: 72,
-  };
 
   const navigate = useNavigate();
 
@@ -562,12 +619,12 @@ function LogIntake() {
                 </tr>
                 <tr>
                   <td>Remaining</td>
-                  <td>{remaining.calories}</td>
-                  <td>{remaining.carbs}</td>
-                  <td>{remaining.fat}</td>
-                  <td>{remaining.protein}</td>
-                  <td>{remaining.sodium}</td>
-                  <td>{remaining.sugar}</td>
+                  <td>{remaining?.calories}</td>
+                  <td>{remaining?.carbs}</td>
+                  <td>{remaining?.fat}</td>
+                  <td>{remaining?.protein}</td>
+                  <td>{remaining?.sodium}</td>
+                  <td>{remaining?.sugar}</td>
                 </tr>
               </tbody>
             </table>

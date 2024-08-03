@@ -33,13 +33,13 @@ function WeeklyStatsCard({data,what,chartColor}) {
   return (
     <Card>
       <Title>Weekly Calories {what}</Title>
-      {data?.totalWeeksCaloriesBurnt && (
+      {data?.totalWeeksCaloriesGained && (
         <BarChart
           xAxis={[
-            { scaleType: "band", data: data?.totalWeeksCaloriesBurnt?.weeks },
+            { scaleType: "band", data: data?.totalWeeksCaloriesGained?.weeks },
           ]}
           series={[{ 
-            data: data?.totalWeeksCaloriesBurnt?.caloriesBurned,
+            data: data?.totalWeeksCaloriesGained?.totalCaloriesGained,
             color: chartColor
            }]}
           height={300}

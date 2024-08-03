@@ -33,6 +33,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+
   }
   
   .activity-level-selector__option {
@@ -43,10 +44,12 @@
     background-color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    box-shadow: 1px 3px 10px grey;
   }
   
   .activity-level-selector__option:hover {
-    background-color: #f5f5f5;
+    border-color: rgb(247, 74, 62);
+    color: rgb(9, 9, 9);
   }
   
   .activity-level-selector__option-title {
@@ -62,14 +65,15 @@
   
   .activity-level-selector__button-list {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 100px;
     width: 100%;
     margin-top: 20px;
   }
   
   .activity-level-selector__button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #f01603;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -79,8 +83,12 @@
   }
 
   .elected{
-    background-color: #4CAF50;
+    border-color: #f68381;
+    background-color: #fb8d87;
   }
   .next-elected{
-    background-color: green;
+    background-color: rgb(168, 11, 3);
+  }
+  .back-elected{
+    background-color: rgb(184, 25, 8);
   }

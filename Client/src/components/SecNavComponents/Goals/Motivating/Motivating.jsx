@@ -1,6 +1,38 @@
 import React from "react";
 import {useLocation,useNavigate} from 'react-router-dom';
-import './motivating.css'
+import './motivating.css';
+import styled from "styled-components";
+
+
+const Container = styled.div`
+  flex: 1;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding-top: 45px; 
+  overflow-y: hidden; 
+`;
+
+const Wrapper = styled.div`
+  width: 550px;
+  height: 580px;
+  max-width: 1400px;
+  display: flex;
+  flex-direction:column;
+  // gap: 15px;
+  @media (max-width: 600px) {
+    gap: 12px;
+  }
+  padding: 20px;
+  // border: 1px solid #fff;
+  // border-radius: 14px;
+  background-color: white;
+
+  position: sticky;
+  top: 80px; 
+  z-index: 1;
+`;
+
 
 function Motivating() {
 
@@ -11,7 +43,7 @@ function Motivating() {
     const navigate = useNavigate();
 
     const handleNextClick = ()=>{
-        navigate('/selectactivitybaseline');
+        navigate('/dashboard');
     }
 
   return (

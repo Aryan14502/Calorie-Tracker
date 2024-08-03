@@ -1,0 +1,63 @@
+.meal-plan {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .daily-calorie-needs {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .macro-nutrient-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .macro-nutrient-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .macro-nutrient-list li {
+    margin-bottom: 10px;
+  }
+  
+  .macro-nutrient-list li:before {
+    content: "•";
+    margin-right: 10px;
+    color: #666;
+  }
+  
+  .meal-plan-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .meal-plan-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .meal-plan-list li {
+    margin-bottom: 10px;
+  }
+  
+  .meal-plan-list li:before {
+    content: "•";
+    margin-right: 10px;
+    color: #666;
+  }

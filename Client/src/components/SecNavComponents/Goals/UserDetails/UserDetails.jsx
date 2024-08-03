@@ -10,14 +10,15 @@ const Container = styled.div`
   justify-content: center;
   padding: 22px 0px;
   overflow-y: scroll;
+  background: linear-gradient(45deg, #E6E6FA, #D8BFD8, #E0B0FF);
+
 `;
 const Wrapper = styled.div`
   // flex: 1;
   max-width: 1400px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
-
+  // gap: 22px;
   @media (max-width: 600px) {
     gap: 12px;
   }

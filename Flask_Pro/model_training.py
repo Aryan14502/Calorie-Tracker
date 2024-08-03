@@ -55,69 +55,62 @@ def preprocess_user_data(user_data):
     
 
 
-    user_info = {
-        'height': user_data['height'],
-        'weight': user_data['weight'],
-        'gender': user_data['gender'],
-        'users_goal': user_data['users_goal'],
-        'ideal_weight': user_data['goalweight'],
-        "baselineactivityLevel":user_data['baselineactivityLevel'],
-        "country": user_data['country'],
-        "healthProblems": user_data['healthProblems'],
-        "medicalHistory":user_data['medicalHistory'],
-        "foodRestrictions": user_data['foodRestrictions'],
-        "foodPreferences": user_data['foodPreferences'],
-        "foodFrequency": user_data['foodFrequency'],
+    # user_info = {
+    #     'height': user_data['height'],
+    #     'weight': user_data['weight'],
+    #     'gender': user_data['gender'],
+    #     'users_goal': user_data['users_goal'],
+    #     'ideal_weight': user_data['ideal_weight'],
+    #     "baselineactivityLevel":user_data['baselineactivityLevel'],
+    #     "country": user_data['country'],
+    #     "healthProblems": user_data['healthProblems'],
+    #     "medicalHistory":user_data['medicalHistory'],
+    #     "foodRestrictions": user_data['foodRestrictions'],
+    #     "foodPreferences": user_data['foodPreferences'],
+    #     "foodFrequency": user_data['foodFrequency'],
+    # }
+
+    user_features = {
+        'Calories': 0,  # Placeholder values
+        'Protein (g)': 0,
+        'Fat (g)': 0,
+        'Carbohydrates (g)': 0
     }
+    return user_features
     
     return user_info
 
 def generate_recommendations(food_df, user_data):
 
    
-  
     food_df = preprocess_food_data(food_df)
     user_features = preprocess_user_data(user_data)
     
-   
     user_features_df = pd.DataFrame([user_features])
     
-  
     feature_columns = ['Calories', 'Protein (g)', 'Fat (g)', 'Carbohydrates (g)']
     
-
-    # if not all(column in food_df.columns for column in feature_columns):
-    #     raise KeyError(f"One or more columns from {feature_columns} are not in the food DataFrame columns: {food_df.columns.tolist()}")
-    
-  
     scaler = StandardScaler()
     scaled_food_features = scaler.fit_transform(food_df[feature_columns])
     
-
     kmeans_food = KMeans(n_clusters=3, random_state=42)
     food_df['Cluster'] = kmeans_food.fit_predict(scaled_food_features)
     
-   
     user_features_scaled = scaler.transform(user_features_df[feature_columns])
     user_cluster = kmeans_food.predict(user_features_scaled)
     user_features_df['Cluster'] = user_cluster[0]
     
-    
     X = food_df[feature_columns]
-    y = food_df['Calories'] 
+    y = food_df['Calories']
     reg = LinearRegression().fit(X, y)
     
-
     cluster_food = food_df[food_df['Cluster'] == user_features_df['Cluster'].values[0]]
     
-  
     predicted_ratings = reg.predict(cluster_food[feature_columns])
     cluster_food['Predicted Rating'] = predicted_ratings
     
-  
     recommendations = cluster_food.sort_values(by='Predicted Rating', ascending=False)
     
- 
     if user_data.get('foodRestrictions'):
         restrictions = user_data['foodRestrictions'].split(',')
         recommendations = recommendations[~recommendations['Food Name'].isin(restrictions)]
@@ -128,15 +121,15 @@ def generate_recommendations(food_df, user_data):
     return recommendations[['Food Name', 'Calories', 'Protein (g)', 'Fat (g)', 'Carbohydrates (g)', 'Predicted Rating']]
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
    
-    sample_food_df = pd.read_csv('csv_files/food_nutrition_dataset.csv')
-    sample_user_data = {
-        'height': 165,
-        'weight': 60,
-        'gender': 'Female',
-        'goal': 'Thyroid Support',
-        'ideal_weight': 50
-    }
-    recommendations = generate_recommendations(sample_food_df, sample_user_data)
-    print(recommendations)
+#     sample_food_df = pd.read_csv('csv_files/food_nutrition_dataset.csv')
+#     sample_user_data = {
+#         'height': 165,
+#         'weight': 60,
+#         'gender': 'Female',
+#         'goal': 'Thyroid Support',
+#         'ideal_weight': 50
+#     }
+#     recommendations = generate_recommendations(sample_food_df, sample_user_data)
+#     print(recommendations)

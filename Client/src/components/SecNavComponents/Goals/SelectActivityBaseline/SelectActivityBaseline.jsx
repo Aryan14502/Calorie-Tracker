@@ -3,7 +3,9 @@ import { useState,useContext } from "react";
 import {useNavigate} from 'react-router-dom';
 import "./selectactivitybaseline.css";
 import styled from "styled-components";
+import { useAuth0 } from "@auth0/auth0-react";
 import UsersInfoContext from "../../../../contexts/usersInfoContext";
+import axios from '../../../../axios'
 
 const Container = styled.div`
   flex: 1;
@@ -12,10 +14,13 @@ const Container = styled.div`
   justify-content: center;
   padding: 22px 0px;
   overflow-y: scroll;
+  background: linear-gradient(45deg, #E6E6FA, #D8BFD8, #E0B0FF);
+
 `;
 
 const Wrapper = styled.div`
   // flex: 1;
+  height: 600px;
   max-width: 1400px;
   display: flex;
   flex-direction: column;
@@ -23,7 +28,13 @@ const Wrapper = styled.div`
   @media (max-width: 600px) {
     gap: 12px;
   }
-`;
+  // border: 1px solid black;
+  border-radius: 14px;
+  box-shadow: 1px 6px 20px #D3D3D3;
+  // background-color: #FEF2EF;
+  background-color: #F0E8FC;
+}
+`; 
 function SelectActivityBaseline() {
 
   const {usersData}  = useContext(UsersInfoContext);
@@ -47,6 +58,10 @@ function SelectActivityBaseline() {
   const [baselineActivitylevel, setBaselineActivitylevel] = useState([]);
   const [isActivityLevel, setIsActivityLevel] = useState(false);
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+
+  const {user} = useAuth0();
+  
 
   function handleOptionClick(option) {
     if (
@@ -63,10 +78,26 @@ function SelectActivityBaseline() {
     }
   }
 
-  function handleNextClick(){
-    usersData.baselineactivityLevel = baselineActivitylevel[0]
+  const handleNextClick = async()=>{
+    usersData.baselineactivityLevel = baselineActivitylevel[0];
+    usersData.userId = user.sub;
     console.log(usersData);
-    navigate('/userdetails');
+
+    try {
+      const response = await axios.post('http://localhost:3001/saveusersinfo',usersData);
+
+      if (response.status === 200) {
+        navigate("/diet");
+      } else {
+        setError("Failed to submit data. Please try again.");
+      }
+    } catch (error) {
+      setError("Failed to submit data. Please try again.");
+    }
+    // Additional validation logic for dob format can be added here
+
+    // navigate("/userdetails2");
+    navigate('/motivating');
   }
 
   return (

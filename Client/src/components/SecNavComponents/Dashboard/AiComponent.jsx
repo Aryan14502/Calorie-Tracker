@@ -1,7 +1,7 @@
-import React, {useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import './aicomponent.css';
-import { IonButton, IonLoading, useIonLoading } from '@ionic/react';
+import "./aicomponent.css";
+import { IonButton, IonLoading, useIonLoading } from "@ionic/react";
 
 const Card = styled.div`
   flex: 1;
@@ -29,6 +29,33 @@ const Title = styled.div`
   }
 `;
 
+const FoodFactContainer = styled.div`
+  position: relative;
+  width: 300px; /* adjust the width as needed */
+  height: 200px; /* adjust the height as needed */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex; /* add this to center the content vertically */
+  justify-content: center; /* add this to center the content horizontally */
+  align-items: center; /* add this to center the content vertically */
+`;
+
+
+const FoodFact = styled.div`
+  font-size: 16px;
+  font-weight: bold;
+  color: purple;
+  text-align: center;
+  padding: 20px;
+  opacity: 0.8;
+  transform: translateY(20px);
+  transition: opacity 0.5s, transform 0.5s;
+
+`;
+
+
 const Text = styled.p`
   font-size: 14px;
   color: #333;
@@ -53,99 +80,63 @@ const ListItem = styled.li`
   color: #333;
   margin-bottom: 8px;
 `;
-function AiComponent({ mealPlanData }) {
-
-  console.log("hello")
-  console.log(mealPlanData)
+function AiComponent({fact}) {
+ 
   const [isData, setData] = useState(false);
+  const [printedText,setPrintedText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  let tempfact = "Hey! health Concious, Welcome To EatWell"
 
-  useEffect(()=>{
-  
+  const [shouldRestart, setShouldRestart] = useState(false);
 
-    setTimeout(()=>{
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (currentIndex < tempfact.length) {
+        setPrintedText(printedText + tempfact[currentIndex]);
+        setCurrentIndex(currentIndex + 1);
+      } else {
+        if (shouldRestart) {
+          setCurrentIndex(0);
+          setPrintedText('');
+        } else {
+          setShouldRestart(true);
+        }
+      }
+    }, 100);
+    return () => clearInterval(intervalId);
+  }, [currentIndex, fact, printedText, shouldRestart]);
 
-      setData(!isData)
-    },3000)
 
-  },[])
+  const [informationArrived, setInformationArrived] = useState("Hello User ");
 
   return (
+    <>
+    <FoodFact>{}</FoodFact>
     <Card>
-      <div className="meal-plan">
-        <h1 className="title ">User Recommendations:</h1>
-        {/* <p className="daily-calorie-needs">
-          Daily Calorie Intake: {dailyCalorieNeeds} calories
-        </p>
-        <h2 className="macro-nutrient-title">Macronutrient Breakdown:</h2>
-        <ul className="macro-nutrient-list">
-          <li>
-            Protein: {macroNutrientGoals[0]}-
-            {Math.round(macroNutrientGoals[0] * 1.2)} grams
-          </li>
-          <li>
-            Carbohydrates: {macroNutrientGoals[1]}-
-            {Math.round(macroNutrientGoals[1] * 1.2)} grams
-          </li>
-          <li>
-            Fat: {macroNutrientGoals[2]}-
-            {Math.round(macroNutrientGoals[2] * 1.2)} grams
-          </li>
-        </ul> */}
+       
+      <div className="chatbot">
+        {/* <FoodFactContainer> */}
+         
+        {/* </FoodFactContainer> */}
 
-        
-
-
-
-
-
-
-        <h2 className="meal-plan-title">Meal Plan:</h2>
-
-        {isData ? (
-        <ul className="meal-plan-list">
-          <li>
-            
-           
-            Breakfast: {mealPlanData.breakfast?.calories} calories,{" "}
-      
-            {mealPlanData.breakfast?.protein}g protein,{" "}
-            {mealPlanData.breakfast?.carbohydrates}g carbohydrates,{" "}
-            {mealPlanData.breakfast?.fat}g fat
-
-          </li>
-          <li>
-            Lunch: {mealPlanData.lunch?.calories} calories,{" "}
-            {mealPlanData.lunch?.protein}g protein,{" "}
-            {mealPlanData.lunch?.carbohydrates}g carbohydrates,{" "}
-            {mealPlanData.lunch?.fat}g fat
-
-          </li>
-          <li>
-            Dinner: {mealPlanData.dinner?.calories} calories,{" "}
-            {mealPlanData.dinner?.protein}g protein,{" "}
-            {mealPlanData.dinner?.carbohydrates}g carbohydrates,{" "}
-            {mealPlanData.dinner?.fat}g fat
-
-          </li>
-          <li>
-            Snacks: {mealPlanData.snacks?.calories} calories,{" "}
-            {mealPlanData.snacks?.protein}g protein,{" "}
-            {mealPlanData.snack?.carbohydrates}g carbohydrates,{" "}
-            {mealPlanData.snacks?.fat}g fat
-
-          </li>
-      
-        </ul>
-        ):(
+        {/* <h1 className="title ">Ask Me ?</h1> */}
+        <FoodFact>{printedText}</FoodFact>
+        {informationArrived ? (
+          <div></div>
+        ) : (
           <div>
-
-          <IonButton id="open-loading">Show Loading</IonButton>
-          <IonLoading trigger="open" message="Loading..." duration={3000} spinner="circles" />
+            <IonButton id="open-loading">Show Loading</IonButton>
+            <IonLoading
+              trigger="open"
+              message="Loading..."
+              duration={3000}
+              spinner="circles"
+            />
           </div>
-        
         )}
       </div>
     </Card>
+    </>
   );
 }
 

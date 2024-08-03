@@ -6,7 +6,9 @@ import styled from "styled-components";
 import IfGoalSelected from "./IfGoalSelected/IfGoalSelected";
 import SelectGoals from "./SelectGoals/SelectGoals";
 import axios from "../../../axios";
+// import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
+import UserDetails from "./UserDetails/UserDetails";
 
 // Styled component Container
 const Container = styled.div`
@@ -14,7 +16,9 @@ const Container = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: ${({ theme }) => theme.bg};
+  // background: ${({ theme }) => theme.bg};
+  background: linear-gradient(45deg, #E6E6FA, #D8BFD8, #E0B0FF);
+
   color: ${({ theme }) => theme.text_primary};
   transition: all 0.2s ease;
 `;
@@ -27,20 +31,24 @@ function Goals() {
   const [usersInfo, setUsersInfo] = useState({});
   const [storedUsersInfo,setStoredUsersInfo] = useState({})
 
-  const  fetchUsersInfofromDatabase = async(userId)=>{
-    const response = await axios.post(
-      "http://localhost:3001/checkusersinfo",
-      { userId }
-    );
-    const usersInfo = response.data; 
-    // console.log(response);
-    // console.log("Data fetched successfully");
-    setUsersInfo(usersInfo);
-    setUsersGoal(usersInfo.users_goal);
+  const fetchUsersInfofromDatabase = async (userId) => {
+    try {
+        const response = await axios.post(
+            "http://localhost:3001/checkusersinfo",
+            { userId }
+        );
+        const usersInfo = response.data;
+        setUsersInfo(usersInfo);
+        setUsersGoal(usersInfo.users_goal);
 
-    // Store the usersInfo in localStorage
-    localStorage.setItem("usersInfo", JSON.stringify(usersInfo));
-  }
+        // Store the usersInfo in localStorage
+        localStorage.setItem("usersInfo", JSON.stringify(usersInfo));
+
+        console.log("Data fetched successfully");
+    } catch (error) {
+        console.error("Error fetching data:", error.message || error);
+    }
+};
 
   useEffect(() => {
 
@@ -77,7 +85,7 @@ function Goals() {
 
   const handleChangeGoalClick = () => {
     // Navigate to the goal selection page or render a goal selection component
-    navigate("/selectgoals");
+    navigate("/userdetails");
   };
 
 
@@ -91,11 +99,11 @@ function Goals() {
     <Container>
       {usersGoal ? (
         <IfGoalSelected
-          // userGoal={usersGoal}
-          // onChangeGoalClick={handleChangeGoalClick}
+          userGoal={usersGoal}
+          onChangeGoalClick={handleChangeGoalClick}
         />
       ) : (
-        <SelectGoals />
+        <UserDetails />
       )}
     </Container>
   );

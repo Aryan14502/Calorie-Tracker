@@ -6,13 +6,15 @@ import { Link, NavLink } from "react-router-dom";
 import LogoImg from "../../../assets/logo2.png";
 import { useAuth0 } from "@auth0/auth0-react";
 // import { Avatar } from "@mui/material";
-import './navbar.css';
+import "./navbar.css";
 import { useDispatch } from "react-redux";
 // import { logout } from "../redux/reducers/userSlice";
 
 const Nav = styled.div`
   //   background-color: ${({ theme }) => theme.bg};
   //  background-color: #f8d3dc;
+  // background: linear-gradient(45deg, #e0c3fc, #8e44ad, #4b0082);
+  background: linear-gradient(45deg, #E6E6FA, #D8BFD8, #E0B0FF);
   height: 80px;
   display: flex;
   align-items: center;
@@ -95,7 +97,7 @@ const UserContainer = styled.div`
   gap: 16px;
   align-items: center;
   padding: 0 6px;
-  color: ${({ theme }) => theme.primary};
+  color: black;
 `;
 
 const TextButton = styled.div`
@@ -144,8 +146,8 @@ const MobileMenu = styled.ul`
 
 const Navbar = () => {
   const [isOpen, setisOpen] = useState(false);
-  const { user,logout } = useAuth0();
-  
+  const { user, logout } = useAuth0();
+
   return (
     <Nav>
       <NavContainer>
@@ -176,11 +178,15 @@ const Navbar = () => {
         </NavItems>
 
         <UserContainer>
-          <Avatar src={user?.picture}>{user?.nickname}</Avatar>
+          <div>
+            <Avatar src={user?.picture}></Avatar>
+            {user?.email}
+          </div>
           {/* <TextButton>Logout</TextButton> */}
           <div className="navbar-sign">
             <button
               onClick={() => {
+                localStorage.clear();
                 logout();
               }}
             >

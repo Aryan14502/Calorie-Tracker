@@ -12,7 +12,7 @@
 .goal-button {
   width: 100%;
   margin: 5px 0; /* Added margin for spacing */
-  padding: 15px 20px; /* Increased padding for better click area */
+  padding: 15px 30px; /* Increased padding for better click area */
   border: 2px solid #ddd; /* Slightly thicker border */
   border-radius: 10px;
   background-color: #fff; /* White background */
@@ -20,50 +20,56 @@
   font-size: 1rem; /* Increased font size */
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions */
+  box-shadow: 1px 5px 20px grey;
 }
 
 /* Hover State for Goal Button */
 .goal-button:hover {
   background-color: #f0f0f0; /* Light gray background on hover */
-  border-color: #ccc; /* Darker border on hover */
+  color: blue;
+  border-color: blue; /* Darker border on hover */
 }
 
 /* Selected State for Goal Button */
 .goal-button.elected {
-  background-color: #4caf50; /* Green background when selected */
-  color: #fff; /* White text when selected */
-  border-color: #4caf50; /* Green border when selected */
-}
+  background-color: #cc0440fa; /*Green background when selected */
+  color: #fff; /*White text when selected */
+  border-color: #af1567; /*Green border when selected */
+  transition: none;
+} 
 
 /* Navigation Buttons Styles */
 .nav-buttons {
+
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px; /* Added margin-top for spacing */
+  justify-content: center;
+  gap:20px;
+  margin-top: 10px; /* Added margin-top for spacing */
 }
 
 /* Individual Navigation Button Styles */
 .back-button,
 .next-button {
-  padding: 10px 20px; /* Padding for better click area */
+  padding: 10px 40px; /* Padding for better click area */
   border: none;
   border-radius: 10px;
-  background-color: #4caf50; /* Green background */
+  background-color: #cc0440fa; /* Green background */
   color: #fff; /* White text */
   font-size: 1rem; /* Increased font size */
   cursor: pointer;
   transition: background-color 0.3s; /* Smooth transition */
+  box-shadow: 1px 3px 10px plum;
 }
 
 /* Hover State for Navigation Buttons */
 .back-button:hover,
 .next-button:hover {
-  background-color: #3e8e41; /* Darker green on hover */
+  background-color: #760244; /* Darker green on hover */
 }
 
 /* Additional Styles for Selected Next Button */
 .next-button.next-elected {
-  background-color: #3e8e41; /* Darker green background when next is selected */
+  background-color: #9c053a; /* Darker green background when next is selected */
 }
 
 /* Additional Styles */

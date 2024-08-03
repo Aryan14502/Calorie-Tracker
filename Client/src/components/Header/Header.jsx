@@ -34,6 +34,29 @@ function Header({ setUser, setIsSignedIn }) {
   const handleLoginClick = () => {
     navigate("/authentication"); // Navigate to signin page
   };
+
+  const scrollFeatures = () => {
+    // console.log(document.querySelector('div'));
+    const section = document.querySelector( '#features' );
+    // const section = document.querySelector(`#${id}`);
+    section.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+  };
+
+  
+  const scrollAbout = () => {
+    // console.log(document.querySelector('div'));
+    const section = document.querySelector( '#aboutUs' );
+    // const section = document.querySelector(`#${id}`);
+    section.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+  };
+   
+  const scrollTestimonials = () => {
+    // console.log(document.querySelector('div'));
+    const section = document.querySelector( '#testimonials' );
+    // const section = document.querySelector(`#${id}`);
+    section.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+  };
+
   return (
     <div className="navbar">
       <div className="navbar-links">
@@ -47,13 +70,13 @@ function Header({ setUser, setIsSignedIn }) {
             <NavLink to="/">Home</NavLink>
           </p>
           <p>
-            <a href="#aboutUs">AboutUs</a>
+            <a   onClick={scrollAbout} >AboutUs</a>
           </p>
           <p>
-            <NavLink to="features">Features</NavLink>
+            <a onClick={scrollFeatures} >Features</a>
           </p>
           <p>
-            <a href="#features">Testimonials</a>
+            <a onClick={scrollTestimonials} >Testimonials</a>
           </p>
           <p>
             <a href="#blog">Something</a>

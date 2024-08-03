@@ -14,6 +14,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   // flex: 1;
+  height: 700px;
   max-width: 1400px;
   display: flex;
   flex-direction: column;
@@ -21,6 +22,11 @@ const Wrapper = styled.div`
   @media (max-width: 600px) {
     gap: 12px;
   }
+    padding: 20px;
+    // border: 1px solid black;
+    border-radius: 14px;
+    box-shadow: 1px 6px 20px #D3D3D3;
+    background-color: #ecfbfc;
 `;
 function FoodIntake() {
   const location = useLocation();
@@ -88,7 +94,7 @@ function FoodIntake() {
   return (
     <Container>
       <Wrapper>
-        <h1> {value}</h1>
+      <h1 style={{textAlign: 'center', fontWeight: "bold"}}> {value}</h1>
 
         <div className="region-select">
           <label for="region">Select Region:</label>
@@ -114,13 +120,13 @@ function FoodIntake() {
             ref={searchInputRef}
           />
           <button class="search-button" onClick={handleSearchClick}>
-            ~ Search
+            Search
           </button>
         </div>
 
 
         <div class="matching-foods">
-          <h2>Matching Foods:</h2>
+          <h2 style={{fontSize: 16, fontWeight: "bold"}}>Matching Foods:</h2>
 
           <select
             id="select-matching-foods"

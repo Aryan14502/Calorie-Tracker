@@ -25,6 +25,14 @@ from pymongo import MongoClient
 from user_data import UserData
 from meal_plan import MealPlan
 
+from ideal_weight import IdealWeight
+
+
+
+
+
+
+
 app = Flask(__name__)
 CORS(app)
 
@@ -390,76 +398,107 @@ cursor = [
   
 ]
 data = pd.DataFrame(list(cursor))
-features_for_weight = ['height', 'weight', 'gender', 'healthProblems']
-missing_features = [feature for feature in features_for_weight if feature not in data.columns]
 
-if missing_features:
-    print(f"Warning: The following features are missing from the data: {missing_features}")
-    print("Available columns:", data.columns.tolist())
-    # You might want to handle this situation, e.g., by removing missing features or imputing data
-    features_for_weight = [feature for feature in features_for_weight if feature in data.columns]
 
-# Select only the available features
-X = data[features_for_weight]
 
-# if 'ideal_weight' not in data.columns:
-#     print("Warning: 'ideal_weight' is not present in the data. You need to calculate or provide this value.")
 
-y = data['ideal_weight']  # Ensure this column exists in your MongoDB data
+# Ideal Weight(What should be the users Goal Weight)
 
-# Create preprocessor
-preprocessor = ColumnTransformer(
-    transformers=[
-        ('num', StandardScaler(), ['height', 'weight']),
-        ('cat', OneHotEncoder(drop='first'), ['gender', 'healthProblems'])
-    ])
-
-# Create pipeline
-model = Pipeline([
-    ('preprocessor', preprocessor),
-    ('regressor', RandomForestRegressor(n_estimators=100, random_state=42))
-])
-
-# Fit the model
-model.fit(X, y)
-
-# Goal Weight
-
-@app.route('/predict', methods=['POST'])
+@app.route('/predictIdealWeight', methods=['POST'])
 def predict():
-        user_data = {
-        'height': float(request.form['height']),
-        'weight': float(request.form['weight']),
-        'gender': request.form['gender'],
-        'healthProblems': request.form['healthProblems'],
-        'foodPreferences': request.form['foodPreferences'],
-        'foodRestrictions': request.form['foodRestrictions'],
-        'goals': request.form['goals']
+    #     user_data = {
+    #     'height': float(request.form['height']),
+    #     'weight': float(request.form['weight']),
+    #     'gender': request.form['gender'],
+    #     'healthProblems': request.form['healthProblems'],
+    #     'foodPreferences': request.form['foodPreferences'],
+    #     'foodRestrictions': request.form['foodRestrictions'],
+    #     'goals': request.form['goals']
+    # }
+        
+        user_data =  {
+        "_id": {
+        "$oid": "6697040f6997ecaa6aeb1cf9"
+        },
+        "userId": "google-oauth2|114640275108446951951",
+        "gender": "male",
+        "height": 66,
+        "weight": 50,
+        "age":30,
+        "baselineactivityLevel": "lightly active",
+        "users_goal": "Loose weight",
+        "goalweight": "60",
+        "birthdate": {
+          "$date": "2024-07-27T00:00:00.000Z"
+        },
+        "country": "India",
+        "healthProblems": "Diabetes",
+        "medicalHistory": "High Blood Pressure",
+        "foodRestrictions": "Gluten Free",
+        "foodPreferences": "Vegetarian",
+        "foodFrequency": "3 meals/day",
+        "ideal_weight" : 60,
+        "__v": 0
     }
         
-        goal_weight_data = pd.DataFrame({
-        'height': [user_data['height']],
-        'weight': [user_data['weight']],
-        'gender': [user_data['gender']],
-        'healthProblems': [user_data['healthProblems']]
-    })
         
-        predicted_weight = model.predict(goal_weight_data)[0]
-        # print(predicted_weight)
+
+        ideal_weight = IdealWeight(user_data["height"],user_data["weight"],user_data["age"],user_data["gender"],user_data["baselineactivityLevel"],user_data["healthProblems"])
+        calculatedIdealWeight = ideal_weight.calculate_ideal_weight()
 
         
 
        
-        
+        print(calculatedIdealWeight)
         # print(jsonify(round(predicted_weight, 2)))
         return jsonify({
-        'goalWeight': round(predicted_weight, 2),
+        'goalWeight': round(calculatedIdealWeight, 2),
        
     })
 
 
 
 # ========================================================================================================================================================================================================
+
+from nutrition_predictor import NutritionPredictor
+@app.route('/predictCalorieAndMacroNutrients',methods=['POST'])
+def predictCalorieAndMacroNutrients():
+    
+      user_info =  {
+        "_id": {
+        "$oid": "6697040f6997ecaa6aeb1cf9"
+        },
+        "userId": "google-oauth2|114640275108446951951",
+        "gender": "M",
+        "height": 66,
+        "weight": 50,
+        "age":30,
+        "activity": "Light",
+        "users_goal": "Loose weight",
+        "goalweight": "60",
+        "birthdate": {
+          "$date": "2024-07-27T00:00:00.000Z"
+        },
+        "country": "India",
+        "healthProblems": "Diabetes",
+        "medicalHistory": "High Blood Pressure",
+        "foodRestrictions": "Gluten Free",
+        "foodPreferences": "Vegetarian",
+        "foodFrequency": "3 meals/day",
+        "ideal_weight" : 60,
+        "__v": 0
+    }
+
+      # user_info = request.get_json()
+      dataset = pd.read_csv('csvFiles/user_nutrition_dataset (2).csv')
+      predictor = NutritionPredictor()
+      predictor.train_model(dataset)
+      prediction = predictor.predict(user_info)
+      return jsonify(prediction)
+    
+
+# ========================================================================================================================================================================================================
+
 
 
 

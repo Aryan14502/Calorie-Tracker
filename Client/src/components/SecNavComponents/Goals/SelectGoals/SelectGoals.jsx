@@ -14,6 +14,8 @@ const Container = styled.div`
   justify-content: center;
   padding: 22px 0px;
   overflow-y: scroll;
+  background: linear-gradient(45deg, #E6E6FA, #D8BFD8, #E0B0FF);
+
 `;
 
 const Wrapper = styled.div`
@@ -68,7 +70,7 @@ function SelectGoals() {
     console.log(usersData);
 
     // Navigate to the next route (/diet) when the NEXT button is clicked
-    navigate("/motivating", { state: { goal } });
+    navigate("/calcidealweight", { state: { goal } });
   };
   return (
     <Container>

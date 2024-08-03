@@ -33,6 +33,9 @@ import UserDetails1 from "./components/SecNavComponents/Goals/UserDetails/UserDe
 // import { Login } from "@mui/icons-material";
 // import CreatedForRouting from "../components/CreatedForRouting.jsx";
 import FoodIntake from "./components/SecNavComponents/LogIntake/FoodIntake/FoodIntake.jsx";
+import UserDetails2 from "./components/SecNavComponents/Goals/UserDetails/UserDetails2.jsx";
+import CalcIdealWeight from "./components/SecNavComponents/Goals/CalcIdealWeight/CalcIdealWeight.jsx";
+import Ingredients from "./components/SecNavComponents/Recipes/Ingredients.jsx";
 
 // import axios from 'axios';
 
@@ -96,26 +99,36 @@ function MainPage() {
 
         {/* path="/userloggedin" exact */}
           <Route element={<UserLoggedIn />}>                    
-            {/* <Route path="user" exact element={<User />} />
-                        <Route path="/workouts" exact element={<Workouts />} /> */}
-            <Route path="/dashboard" exact element={<Dashboard />} />
+                {/* <Route path="user" exact element={<User />} />
+                            <Route path="/workouts" exact element={<Workouts />} /> */}
+                <Route path="/dashboard" exact element={<Dashboard />} />
 
-            <Route path="/recipes" exact element={<Recipes />} />
-            <Route path="/logIntake" exact element={<LogIntake />} />
-            <Route path="/goals" exact element={<Goals />} />
+                <Route path="/recipes" exact element={<Recipes />} />
+                <Route path="/logIntake" exact element={<LogIntake />} />
+                <Route path="/goals" exact element={<Goals />} />
 
-            <Route path="/selectgoals" exact element={<SelectGoals />} />
-            <Route path="/motivating" exact element={<Motivating />} />
-            <Route
-              path="/selectactivitybaseline"
-              exact
-              element={<SelectActivityBaseline />}
-            />
-            <Route path="/userdetails" exact element={<UserDetails />} />
-            <Route path="/userdetails1" exact element={<UserDetails1 />} />
-            <Route path="/diet" exact element={<Diet />} />
-            <Route path="/foodintake" exact element={<FoodIntake />} />
+                <Route path="/selectgoals" exact element={<SelectGoals />} />
+                <Route path="/calcidealweight" exact element={<CalcIdealWeight />} />
+                <Route path="/motivating" exact element={<Motivating />} />
+                <Route
+                  path="/selectactivitybaseline"
+                  exact
+                  element={<SelectActivityBaseline />}
+                />
+                <Route path="/userdetails" exact element={<UserDetails />} />
+                <Route path="/userdetails1" exact element={<UserDetails1 />} />
+                <Route path="/userdetails2" exact element={<UserDetails2 />} />
+                <Route path="/diet" exact element={<Diet />} />
+                <Route path="/foodintake" exact element={<FoodIntake />} />
+                <Route path="/ingredients" exact element={<Ingredients />} />
+
+                
+
+                
+
           </Route>
+
+
      
       </Routes>
 
