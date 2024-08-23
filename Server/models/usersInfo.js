@@ -21,6 +21,10 @@ const UserInfoSchema = mongoose.Schema({
     "foodPreferences": String,
     "foodFrequency": Number,
     "ideal_weight" : Number,
+    "calorie_needs" : Number,
+    "carbs":Number,
+    "protein":Number,
+    "fat" : Number
 
 });
 //  {

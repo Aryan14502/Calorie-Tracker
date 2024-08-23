@@ -78,13 +78,42 @@ function SelectActivityBaseline() {
     }
   }
 
+  
+  const fetchRecommendations = async () => {
+    try {
+      const userId = user?.sub;
+      console.log(userId)
+      const response = await axios.post(`http://localhost:5000/predictCalorieAndMacroNutrients`,usersData);
+      // const data = response;
+      // console.log(response.data);
+      const dailyNeeds = await response.data;
+      usersData.calorie_needs =await  dailyNeeds.calorie_needs
+      usersData.carbs = await dailyNeeds.carbs
+      usersData.fat =await  dailyNeeds.fat
+      usersData.protein =await  dailyNeeds.protein
+      console.log(usersData);
+      // setMealPlanData(response.data);
+      
+      // setRecommendations(response.data.recommendations);
+      // setProgress(response.data.progress);
+    } catch (error) {
+      console.error('Error fetching recommendations:', error);
+    }
+  };
+
   const handleNextClick = async()=>{
-    usersData.baselineactivityLevel = baselineActivitylevel[0];
+    usersData.activity = baselineActivitylevel[0];
     usersData.userId = user.sub;
     console.log(usersData);
 
+    await fetchRecommendations();
+
+
+
     try {
       const response = await axios.post('http://localhost:3001/saveusersinfo',usersData);
+      console.log(usersData);
+      localStorage.setItem('usersInfo',JSON.stringify(usersData));
 
       if (response.status === 200) {
         navigate("/diet");
@@ -97,7 +126,7 @@ function SelectActivityBaseline() {
     // Additional validation logic for dob format can be added here
 
     // navigate("/userdetails2");
-    navigate('/motivating');
+    navigate('/calcidealweight');
   }
 
   return (

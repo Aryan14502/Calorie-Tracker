@@ -44,6 +44,17 @@ const App = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  function calculateAge(birthDate) {
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     if (!sex || !dob || !country) {
@@ -51,7 +62,7 @@ const App = () => {
       return;
     }
     usersData.gender=sex;
-    usersData.birthdate = dob;
+    usersData.age = calculateAge(dob);
     usersData.country = country;
     
     console.log(usersData)
@@ -62,17 +73,17 @@ const App = () => {
     //   country,
     // };
 
-    try {
-      const response = await axios.post('http://localhost:3001/saveusersinfo',usersData);
+    // try {
+    //   const response = await axios.post('http://localhost:3001/saveusersinfo',usersData);
 
-      if (response.status === 200) {
-        navigate("/diet");
-      } else {
-        setError("Failed to submit data. Please try again.");
-      }
-    } catch (error) {
-      setError("Failed to submit data. Please try again.");
-    }
+    //   if (response.status === 200) {
+    //     navigate("/diet");
+    //   } else {
+    //     setError("Failed to submit data. Please try again.");
+    //   }
+    // } catch (error) {
+    //   setError("Failed to submit data. Please try again.");
+    // }
     // Additional validation logic for dob format can be added here
 
     navigate("/userdetails2");

@@ -61,3 +61,125 @@
     margin-right: 10px;
     color: #666;
   }
+
+
+  /* Global Styles */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f7f7f7;
+}
+
+/* Meal Plan Container */
+
+.meal-plan-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Styles */
+
+section {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+section h3 {
+  font-weight: bold;
+  margin-top: 0;
+  color: #337ab7;
+}
+
+section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+section li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #666;
+}
+
+section li:before {
+  content: "\2022";
+  font-size: 18px;
+  color: #337ab7;
+  margin-right: 10px;
+}
+
+section h4 {
+  font-weight: bold;
+  margin-top: 20px;
+  color: #337ab7;
+}
+
+/* Recipe List Styles */
+
+.recipe-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recipe-list li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.recipe-list li:hover {
+  color: #337ab7;
+}
+
+/* Animations */
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Add animations to section headers and recipe list items */
+
+section h3 {
+  animation: fadeIn 1s ease-out;
+}
+
+.recipe-list li {
+  animation: bounceIn 1s ease-out;
+}

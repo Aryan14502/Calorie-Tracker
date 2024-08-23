@@ -406,53 +406,64 @@ data = pd.DataFrame(list(cursor))
 
 @app.route('/predictIdealWeight', methods=['POST'])
 def predict():
-    #     user_data = {
-    #     'height': float(request.form['height']),
-    #     'weight': float(request.form['weight']),
-    #     'gender': request.form['gender'],
-    #     'healthProblems': request.form['healthProblems'],
-    #     'foodPreferences': request.form['foodPreferences'],
-    #     'foodRestrictions': request.form['foodRestrictions'],
-    #     'goals': request.form['goals']
-    # }
-        
-        user_data =  {
-        "_id": {
-        "$oid": "6697040f6997ecaa6aeb1cf9"
-        },
-        "userId": "google-oauth2|114640275108446951951",
-        "gender": "male",
-        "height": 66,
-        "weight": 50,
-        "age":30,
-        "baselineactivityLevel": "lightly active",
-        "users_goal": "Loose weight",
-        "goalweight": "60",
-        "birthdate": {
-          "$date": "2024-07-27T00:00:00.000Z"
-        },
-        "country": "India",
-        "healthProblems": "Diabetes",
-        "medicalHistory": "High Blood Pressure",
-        "foodRestrictions": "Gluten Free",
-        "foodPreferences": "Vegetarian",
-        "foodFrequency": "3 meals/day",
-        "ideal_weight" : 60,
-        "__v": 0
+    data=request.json
+    user_data = {
+      'height': float(data['height']),
+      'weight': float(data['weight']),
+      'goalweight': float(data['goalweight']),
+      'age': int(data['age']),
+      'gender': data['gender'],
+      'country': data['country'],
+      'healthProblems': data['healthProblems'],
+      'medicalHistory': data['medicalHistory'],
+      'foodRestrictions': data['foodRestrictions'],
+      'foodPreferences': data['foodPreferences'],
+      'foodFrequency': int(data['foodFrequency']),
+      'goals': data['users_goal'],
+      'activity' : "lightly active"
     }
+    print(user_data)
+    # rest of your code
+
+        # user_data=request.json
+        
+    #     user_data =  {
+    #     "_id": {
+    #     "$oid": "6697040f6997ecaa6aeb1cf9"
+    #     },
+    #     "userId": "google-oauth2|114640275108446951951",
+    #     "gender": "male",
+    #     "height": 66,
+    #     "weight": 50,
+    #     "age":30,
+    #     "activity": "lightly active",
+    #     "users_goal": "Loose weight",
+    #     "goalweight": "60",
+    #     "birthdate": {
+    #       "$date": "2024-07-27T00:00:00.000Z"
+    #     },
+    #     "country": "India",
+    #     "healthProblems": "Diabetes",
+    #     "medicalHistory": "High Blood Pressure",
+    #     "foodRestrictions": "Gluten Free",
+    #     "foodPreferences": "Vegetarian",
+    #     "foodFrequency": "3 ",
+        
+    #     "__v": 0
+    # }
         
         
 
-        ideal_weight = IdealWeight(user_data["height"],user_data["weight"],user_data["age"],user_data["gender"],user_data["baselineactivityLevel"],user_data["healthProblems"])
-        calculatedIdealWeight = ideal_weight.calculate_ideal_weight()
+    ideal_weight = IdealWeight(user_data["height"],user_data["weight"],user_data["age"],user_data["gender"],user_data["activity"],user_data["healthProblems"])
+    calculatedIdealWeight = ideal_weight.calculate_ideal_weight()
 
         
 
        
-        print(calculatedIdealWeight)
-        # print(jsonify(round(predicted_weight, 2)))
-        return jsonify({
-        'goalWeight': round(calculatedIdealWeight, 2),
+    print(calculatedIdealWeight)
+    # print(jsonify(round(predicted_weight, 2)))
+    return jsonify({
+    'idealWeight': round(calculatedIdealWeight, 2),
        
     })
 
@@ -463,38 +474,76 @@ def predict():
 from nutrition_predictor import NutritionPredictor
 @app.route('/predictCalorieAndMacroNutrients',methods=['POST'])
 def predictCalorieAndMacroNutrients():
-    
-      user_info =  {
-        "_id": {
-        "$oid": "6697040f6997ecaa6aeb1cf9"
-        },
-        "userId": "google-oauth2|114640275108446951951",
-        "gender": "M",
-        "height": 66,
-        "weight": 50,
-        "age":30,
-        "activity": "Light",
-        "users_goal": "Loose weight",
-        "goalweight": "60",
-        "birthdate": {
-          "$date": "2024-07-27T00:00:00.000Z"
-        },
-        "country": "India",
-        "healthProblems": "Diabetes",
-        "medicalHistory": "High Blood Pressure",
-        "foodRestrictions": "Gluten Free",
-        "foodPreferences": "Vegetarian",
-        "foodFrequency": "3 meals/day",
-        "ideal_weight" : 60,
-        "__v": 0
+      
+    data=request.json
+    user_data = {
+      'height': float(data['height']),
+      'weight': float(data['weight']),
+      'goalweight': float(data['goalweight']),
+      'age': int(data['age']),
+      'gender': data['gender'],
+      'country': data['country'],
+      'healthProblems': data['healthProblems'],
+      'medicalHistory': data['medicalHistory'],
+      'foodRestrictions': data['foodRestrictions'],
+      'foodPreferences': data['foodPreferences'],
+      'foodFrequency': int(data['foodFrequency']),
+      'users_goal': data['users_goal'],
+      'activity' : "Light"
     }
+#     {
+#     "height": "64",
+#     "weight": "49",
+#     "goalweight": "58",
+#     "gender": "M",
+#     "age": 20,
+#     "country": "India",
+#     "healthProblems": "Mental disorder",
+#     "medicalHistory": "Accident",
+#     "foodRestrictions": "Lactose",
+#     "foodPreferences": "Oraganic",
+#     "foodFrequency": "3",
+#     "users_goal": "Gain weight",
+#     "activity": "Lightly Active",
+#     "userId": "google-oauth2|114640275108446951951"
+# }
+
+    
+      # user_info = request.json
+      # print("Received user info:")
+      # print(user_info)
+    
+    #   user_info =  {
+    #     "_id": {
+    #     "$oid": "6697040f6997ecaa6aeb1cf9"
+    #     },
+    #     "userId": "google-oauth2|114640275108446951951",
+    #     "gender": "M",
+    #     "height": 67,
+    #     "weight": 50,
+    #     "age":22,
+    #     "activity": "Light",
+    #     "users_goal": "Gain weight",
+    #     "goalweight": "60",
+    #     "birthdate": {
+    #       "$date": "2024-07-27T00:00:00.000Z"
+    #     },
+    #     "country": "India",
+    #     "healthProblems": "Diabetes",
+    #     "medicalHistory": "High Blood Pressure",
+    #     "foodRestrictions": "Gluten Free",
+    #     "foodPreferences": "Vegetarian",
+    #     "foodFrequency": "3 meals/day",
+    #     "ideal_weight" : 60,
+    #     "__v": 0
+    # }
 
       # user_info = request.get_json()
-      dataset = pd.read_csv('csvFiles/user_nutrition_dataset (2).csv')
-      predictor = NutritionPredictor()
-      predictor.train_model(dataset)
-      prediction = predictor.predict(user_info)
-      return jsonify(prediction)
+    dataset = pd.read_csv('csvFiles/user_nutrition_dataset (2).csv')
+    predictor = NutritionPredictor()
+    predictor.train_model(dataset)
+    prediction = predictor.predict(user_data)
+    return jsonify(prediction)
     
 
 # ========================================================================================================================================================================================================
@@ -502,26 +551,34 @@ def predictCalorieAndMacroNutrients():
 
 
 
-@app.route('/recommend', methods=['GET'])
+@app.route('/recommend', methods=['POST'])
 def recommend():
 
 
     # users_df= fetch_and_preprocess_data() 
-    user_data = UserData(70, 175, 'male', 25, 'sedentary')
-    daily_calorie_needs = user_data.get_daily_calorie_needs()
-    macro_nutrient_goals = user_data.get_macro_nutrient_goals()
+    # user_data = UserData(67, 50, 'male', 20, 'sedentary')
+    # daily_calorie_needs = user_data.get_daily_calorie_needs()
+    # macro_nutrient_goals = user_data.get_macro_nutrient_goals()
+    # print("calorie goal",daily_calorie_needs)
+    # print("Macro nutrient Goals",type(macro_nutrient_goals))
+    data = request.json
+    print("data",data)
 
-    meal_plan = MealPlan(daily_calorie_needs, macro_nutrient_goals)
+
+    meal_plan = MealPlan(data["calorieneeds"], data["macronutrientsgoals"])
+    print("hello 1",data["calorieneeds"])
+    print("hello 2",data["macronutrientsgoals"])
+   
     meal_plan_data = meal_plan.generate_meal_plan()
     
 
 
-    print("User Recommendations:")
-    print(f"Daily Calorie Intake: {daily_calorie_needs} calories")
-    print("Macronutrient Breakdown:")
-    print(f"Protein: {macro_nutrient_goals[0]}-{'{:.0f}'.format(macro_nutrient_goals[0]*1.2)} grams")
-    print(f"Carbohydrates: {macro_nutrient_goals[1]}-{'{:.0f}'.format(macro_nutrient_goals[1]*1.2)} grams")
-    print(f"Fat: {macro_nutrient_goals[2]}-{'{:.0f}'.format(macro_nutrient_goals[2]*1.2)} grams")
+    # print("User Recommendations:")
+    # print(f"Daily Calorie Intake: {daily_calorie_needs} calories")
+    # print("Macronutrient Breakdown:")
+    # print(f"Protein: {macro_nutrient_goals[0]}-{'{:.0f}'.format(macro_nutrient_goals[0]*1.2)} grams")
+    # print(f"Carbohydrates: {macro_nutrient_goals[1]}-{'{:.0f}'.format(macro_nutrient_goals[1]*1.2)} grams")
+    # print(f"Fat: {macro_nutrient_goals[2]}-{'{:.0f}'.format(macro_nutrient_goals[2]*1.2)} grams")
     print("Meal Plan:")
     print(f"Breakfast: {meal_plan_data['breakfast']['calories']} calories, {meal_plan_data['breakfast']['protein']}g protein, {meal_plan_data['breakfast']['carbohydrates']}g carbohydrates, {meal_plan_data['breakfast']['fat']}g fat")
     print(f"Lunch: {meal_plan_data['lunch']['calories']} calories, {meal_plan_data['lunch']['protein']}g protein, {meal_plan_data['lunch']['carbohydrates']}g carbohydrates, {meal_plan_data['lunch']['fat']}g fat")

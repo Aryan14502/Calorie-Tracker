@@ -289,18 +289,31 @@ function LogIntake() {
 
     
 
-
+    const totalNutrition = JSON.parse(localStorage.getItem("totalnutrition"))
     setRemaining ({
-      calories: dailyGoal.calories - totals.calories ,
-      carbs:  dailyGoal.carbs - totals.carbs,
-      fat: totals.fat - dailyGoal.fat,
+      calories: dailyGoal.calories - totalNutrition.calories ,
+      carbs:  dailyGoal.carbs - totalNutrition.carbs,
+      fat: dailyGoal.fat - totalNutrition.fat  ,
 
-      protein: dailyGoal.protein -  totals.protein,
-      sodium: dailyGoal.sodium - totals.sodium ,
-      sugar:  dailyGoal.sugar - totals.sugar
+      protein: dailyGoal.protein -  totalNutrition.protein,
+      sodium: dailyGoal.sodium - totalNutrition.sodium ,
+      sugar:  dailyGoal.sugar - totalNutrition.sugar
     }
     );
-    setRemainingGoal(remaining);
+
+    localStorage.setItem('remainingnutrition',JSON.stringify({
+      calories: dailyGoal.calories - totalNutrition.calories ,
+      carbs:  dailyGoal.carbs - totalNutrition.carbs,
+      fat: dailyGoal.fat - totalNutrition.fat  ,
+
+      protein: dailyGoal.protein -  totalNutrition.protein,
+      sodium: dailyGoal.sodium - totalNutrition.sodium ,
+      sugar:  dailyGoal.sugar - totalNutrition.sugar
+
+    }));
+    // setRemainingGoal(remaining);
+    // console.log("remaining Goal");
+    // console.log(remainingGoal);
 
 
 

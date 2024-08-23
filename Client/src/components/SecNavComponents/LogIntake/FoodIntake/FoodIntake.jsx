@@ -49,8 +49,8 @@ function FoodIntake() {
     let search = searchInputRef.current.value;
 
     // let search = searchInputRef.current.value;
-    const apiKey = "3ffb6fa2920e40b9b74433a1c86bf79a";
-    const url = `https://api.spoonacular.com/recipes/findByNutrients?query=${search}&apiKey=${apiKey}&cuisine=${cuisine}&maxCarbs=100`;
+    const apiKey = "e74fd2b34e6146f495621c78751aec4d";
+    const url = `https://api.spoonacular.com/recipes/findByNutrients?query=${search}&apiKey=${apiKey}&cuisine=${cuisine}&maxCarbs=500`;
     // console.log(search);
 
     fetch(url)
@@ -223,12 +223,7 @@ function FoodIntake() {
           {/* <button class="nutrition-info-button">Nutrition Info</button> */}
         </div>
 
-        {/* <div class="not-found">
-          <p>
-            Can't find what you're looking for?{" "}
-            <a href="#">Add a food to the database</a>
-          </p>
-        </div> */}
+
       </Wrapper>
     </Container>
   );

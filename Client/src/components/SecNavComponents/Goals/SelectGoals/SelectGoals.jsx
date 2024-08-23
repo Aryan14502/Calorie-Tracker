@@ -1,10 +1,14 @@
+
+
+
+
+
 import React from "react";
 import "./selectgoals.css";
 import { useState ,useContext} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import UsersInfoContext from "../../../../contexts/usersInfoContext";
-
 
 const Container = styled.div`
 
@@ -70,7 +74,7 @@ function SelectGoals() {
     console.log(usersData);
 
     // Navigate to the next route (/diet) when the NEXT button is clicked
-    navigate("/calcidealweight", { state: { goal } });
+    navigate("/selectactivitybaseline", { state: { goal } });
   };
   return (
     <Container>

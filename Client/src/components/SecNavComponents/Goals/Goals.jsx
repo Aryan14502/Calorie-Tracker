@@ -36,6 +36,7 @@ function Goals() {
         const response = await axios.post(
             "http://localhost:3001/checkusersinfo",
             { userId }
+            
         );
         const usersInfo = response.data;
         setUsersInfo(usersInfo);
@@ -81,7 +82,7 @@ function Goals() {
   
 
    
-  }, [user]); // Empty dependency array ensures useEffect runs once on component mount
+  }, [user]); 
 
   const handleChangeGoalClick = () => {
     // Navigate to the goal selection page or render a goal selection component

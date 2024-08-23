@@ -2,9 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
 import UsersInfoContext from "../../../../contexts/usersInfoContext";
 import "./calcidealweight.css"; 
+import axios from "../../../../axios";
 
 function CalcIdealWeight() {
-  const [idealWeight, setIdealWeight] = useState(60);
+  const [idealWeight, setIdealWeight] = useState();
   const [idealWeightText, setIdealWeightText] = useState(
     `Your Ideal Weight Must be : ${idealWeight}`
   );
@@ -31,6 +32,28 @@ function CalcIdealWeight() {
   };
 
   useEffect(() => {
+
+    const fetchIdealWeight = async () => {
+      try {
+        // console.log(userId);
+        const response = await axios.post(
+          `http://localhost:5000/predictIdealWeight`,usersData
+        );
+        console.log(response.data.idealWeight);
+        setIdealWeight(response.data.idealWeight)
+        // setMealData(response.data);
+
+        // setRecommendations(response.data.recommendations);
+        // setProgress(response.data.progress);
+      } catch (error) {
+        console.error("Error fetching recommendations:", error);
+      }
+    };
+
+    fetchIdealWeight();
+
+
+    
     if (userInfo.goal_weight < idealWeight) {
       setComplement(`Your Goal Weight is less than the Ideal Weight `);
       if (userInfo.users_goal === "Loose Weight") {
@@ -51,13 +74,14 @@ function CalcIdealWeight() {
   }, [userInfo]);
 
   const handleContinue = () => {
-    navigate("/selectactivitybaseline");
+    navigate("/motivating");
+    console.log("usersData",usersData)
   };
 
   return (
     <div className="container">
       <div className="card">
-        <h1>{idealWeightText}</h1>
+        <h1> {`Your Ideal Weight Must be : ${idealWeight}`}</h1>
         <p>{complement}</p>
         <button
           type="button"

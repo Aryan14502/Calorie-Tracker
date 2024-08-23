@@ -17,7 +17,7 @@ class IdealWeight():
     
     def calculate_ideal_bmi(self, bmi):
 
-        if self.gender == 'male':
+        if self.gender == 'M':
             if bmi < 18.5:
                 ideal_bmi = 18.5
             elif bmi < 25:

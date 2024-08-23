@@ -154,6 +154,7 @@ function Dashboard() {
   const [userId, setUserId] = useState(null);
   const [isUserIdReady, setIsUserIdReady] = useState(false);
   const {remainingGoal} = useContext(UsersInfoContext)
+  const [usersInfo, setUsersInfo] = useState({});
 
 
   // const { user } = useAuth0();
@@ -179,6 +180,13 @@ function Dashboard() {
     calories: 1,
   });
 
+  const [dailyNeeds ,setDailyNeeds]= useState({
+    calories:1,
+    carbs:1,
+    protein:1,
+    fat:1
+  });
+
   const [weeklyGainedData, setWeeklyGainedData] = useState({
     week1:1,
     week2:1,
@@ -187,24 +195,119 @@ function Dashboard() {
     week5:1,
   });
 
+  const [averageCalories,setAverageCalories] = useState(1);
+  const {setdailyneeds} = useContext(UsersInfoContext);
+  const {setRemainingGoal} = useContext(UsersInfoContext);
+
+
   useEffect(() => {
     if (user) {
       setUserId(user?.sub);
       setIsUserIdReady(true);
       setLoading(true)
     }
-  }, [user]); // Add user as a dependency
+  }, [user]); 
 
-  // if (!isUserIdReady) {
-  //   return <div>Loading...</div>;
-  // }
+  const fetchUsersInfofromDatabase = async (userId) => {
+    try {
+        const response = await axios.post(
+            "http://localhost:3001/checkusersinfo",
+            { userId }
+        );
+        const usersInfo = response.data;
+        setUsersInfo(usersInfo);
+        if(!usersInfo?.calorie_needs){
+          console.log("nothing")
+        }
+        else{
+          setDailyNeeds({
+            calories:usersInfo.calorie_needs,
+            carbs:usersInfo.carbs,
+            protein:usersInfo.protein,
+            fat:usersInfo.fat
+          })
+        }
+        
 
+        // Store the usersInfo in localStorage
+        localStorage.setItem("usersInfo", JSON.stringify(usersInfo));
 
-  // setTodaysData({
-  //   carbs : 20,
-  //   protein : 30,
-  //   fat : 50
+        console.log("Data fetched successfully");
+    } catch (error) {
+        console.error("Error fetching data:", error.message || error);
+    }
+};
+
+useEffect(()=>{
+
+  // setDailyNeeds({
+  //   calories:usersInfo.calorie_needs,
+  //   carbs:usersInfo.carbs,
+  //   protein:usersInfo.protein,
+  //   fat:usersInfo.fat
   // })
+  setdailyneeds({
+    calories:usersInfo.calorie_needs,
+    carbs:usersInfo.carbs,
+    protein:usersInfo.protein,
+    fat:usersInfo.fat
+  })
+  const remaininggoal =  JSON.parse(localStorage.getItem("remainingnutrition"));
+  if(remaininggoal){
+    console.log("yes")
+    setRemainingGoal(remaininggoal);
+  }
+  else{
+    console.log("no")
+    setRemainingGoal({
+      calories:usersInfo.calorie_needs,
+      carbs:usersInfo.carbs,
+      protein:usersInfo.protein,
+      fat:usersInfo.fat
+    });
+    
+
+  }
+
+},[usersInfo])
+
+useEffect(()=>{
+    console.log("dailyneeds")
+  console.log(dailyNeeds);
+  console.log(usersInfo)
+},[dailyNeeds])
+
+  useEffect(() => {
+
+    if(!isUserIdReady){return}
+    console.log("useEffect called")
+    console.log("hello")
+    // setStoredUsersInfo(JSON.parse(localStorage.getItem("usersInfo")))
+    const storedUsersInfo =  localStorage.getItem("usersInfo");
+    console.log("storedUsersInfo",storedUsersInfo)
+          if(storedUsersInfo) {
+
+            const parsedUsersInfo = JSON.parse(storedUsersInfo)
+            console.log("parsedUsersInfo",parsedUsersInfo)
+            setUsersInfo(parsedUsersInfo);
+            console.log("usersInfo",usersInfo)
+
+
+
+            // setUsersGoal(parsedUsersInfo.users_goal);
+            // console.log("usersGoal",usersGoal);
+
+    
+          } 
+          else{
+
+            fetchUsersInfofromDatabase(userId);
+            
+          
+          }
+  }, [isUserIdReady]); 
+
+
 
 
   useEffect(() => {
@@ -251,6 +354,7 @@ function Dashboard() {
           console.log(lastMonthsData)
           setWeeklyGainedData(lastMonthsData);
           console.log(weeklyGainedData)
+          
 
    
 
@@ -334,6 +438,11 @@ useEffect(() => {
     };
   }, [intervalId]);
 
+  useEffect(() => {
+    const average = Object.values(weeklyGainedData).reduce((sum, value) => sum + value, 0) / 30;
+    setAverageCalories(average);
+  }, [weeklyGainedData]);
+
   // ===========================================================================================
 
   // useEffect(() => {
@@ -402,10 +511,11 @@ useEffect(() => {
 
     },
     totalCaloriesGainedToday: todaysData?.calories,
-    averageCaloriesGained: function(weeklyGainedData){
-      const average =(weeklyGainedData.week1+weeklyGainedData.week2+weeklyGainedData.week3+weeklyGainedData.week4+weeklyGainedData.week5)/30;
-      return average;
-    },
+    averageCaloriesGained: averageCalories,
+    // function(weeklyGainedData){
+    //   const average =(weeklyGainedData.week1+weeklyGainedData.week2+weeklyGainedData.week3+weeklyGainedData.week4+weeklyGainedData.week5)/30;
+    //   return average;
+    // },
     totalCaloriesBurned: 60,
     averageCaloriesBurned: 70,
   };
@@ -451,7 +561,7 @@ useEffect(() => {
                     opacity: 1,
                   }}
                 >
-                  <Graph remainingGoal={remainingGoal}/>
+                  <Graph remainingGoal={remainingGoal} dailyNeeds={dailyNeeds}/>
                 </div>
               </Card>
             </div>

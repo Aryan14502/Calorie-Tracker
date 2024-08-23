@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./recipes.css";
 import { IonItem, IonLabel, IonSpinner } from "@ionic/react";
-import {useNavigate}  from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -12,9 +12,8 @@ const Container = styled.div`
   justify-content: center;
   padding: 22px 0px;
   overflow-y: scroll;
-  // background-image: linear-gradient(to bottom, #c5c3c5, #7a288a); 
+  // background-image: linear-gradient(to bottom, #c5c3c5, #7a288a);
   // background-color:  #BCE3C5;
-  
 `;
 const RecipeFinder = () => {
   const [userInfo, setUserInfo] = useState({
@@ -32,24 +31,21 @@ const RecipeFinder = () => {
     setUserInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
   };
 
-
-
   const fetchRecipes = async () => {
-    
     setError(null);
     try {
       const response = await axios.get(
         `https://api.spoonacular.com/recipes/complexSearch?`,
         {
           params: {
-            apiKey: "3ffb6fa2920e40b9b74433a1c86bf79a",
+            apiKey: "e74fd2b34e6146f495621c78751aec4d",
             ...userInfo,
-            number: 12, // Number of recipes to fetch
+            number: 12,
           },
         }
       );
       setRecipes(response.data.results);
-      console.log(recipes)
+      console.log(recipes);
     } catch (err) {
       setError("Failed to fetch recipes. Please try again.");
     } finally {
@@ -57,90 +53,99 @@ const RecipeFinder = () => {
     }
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if(!userInfo.diet || !userInfo.intolerances)
-    {
+    if (!userInfo.diet || !userInfo.intolerances) {
       alert("Fill the Requirements");
-      setLoading(false)
-    }else{
-    setTimeout(() => {
-      fetchRecipes();
-    }, 3000);
-  }
-    
+      setLoading(false);
+    } else {
+      setTimeout(() => {
+        fetchRecipes();
+      }, 3000);
+    }
   };
 
   const handleCardClick = (recipe) => {
     console.log(`Card clicked: ${recipe.title}`);
-    console.log(`Card id :${recipe.id}`)
-    navigate('/ingredients',{state : {recipeid : recipe.id}})
+    console.log(`Card id :${recipe.id}`);
+    navigate("/ingredients", { state: { recipeid: recipe.id } });
     // Add your logic here to handle the card click
   };
 
   return (
-    <div className="" style={{background: "linear-gradient(45deg, #E6E6FA, #D8BFD8, #E0B0FF)",height: "100%",  display: "flex", justifyContent: "center"}}>
-    
-    <div className="recipe-finder">
-      <h1>Recipe Finder</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="location"
-          value={userInfo.location}
-          onChange={handleInputChange}
-          placeholder="Your location"
-        />
-        <input
-          type="text"
-          name="diet"
-          value={userInfo.diet}
-          onChange={handleInputChange}
-          placeholder="Diet (e.g., vegetarian, vegan)"
-        />
-        <input
-          type="text"
-          name="intolerances"
-          value={userInfo.intolerances}
-          onChange={handleInputChange}
-          placeholder="Intolerances (e.g., gluten, dairy)"
-        />
-        <button type="submit">Find Recipes</button>
-      </form>
+    // <div
+    //   className=""
+    //   style={{
+    //     background: "linear-gradient(45deg, #E6E6FA, #D8BFD8, #E0B0FF)",
+    //     height: "100%",
+    //     display: "flex",
+    //     justifyContent: "center",
+    //   }}
+    // >
+    <>
 
-      {loading && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            // height: "100vh",
-          }}
-        >
-          <IonItem>
-            <IonSpinner name="circular"></IonSpinner>
-          </IonItem>
-        </div>
-      )}
+      <div className="recipe-finder">
+        <h1>Recipe Finder</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="location"
+            value={userInfo.location}
+            onChange={handleInputChange}
+            placeholder="Your location"
+          />
+          <input
+            type="text"
+            name="diet"
+            value={userInfo.diet}
+            onChange={handleInputChange}
+            placeholder="Diet (e.g., vegetarian, vegan)"
+          />
+          <input
+            type="text"
+            name="intolerances"
+            value={userInfo.intolerances}
+            onChange={handleInputChange}
+            placeholder="Intolerances (e.g., gluten, dairy)"
+          />
+          <button type="submit">Find Recipes</button>
+        </form>
 
-</div>
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              // height: "100vh",
+            }}
+          >
+            <IonItem>
+              <IonSpinner name="circular"></IonSpinner>
+            </IonItem>
+          </div>
+        )}
+      </div>
       {error && <p className="error">{error}</p>}
+
+
 
       <div className="recipe-grid">
         {recipes.map((recipe) => (
-          <div key={recipe.id} className="recipe-card" onClick={() => handleCardClick(recipe)}>
+          <div
+            key={recipe.id}
+            className="recipe-card"
+            onClick={() => handleCardClick(recipe)}
+          >
             <img src={recipe.image} alt={recipe.title} />
             <h3>{recipe.title}</h3>
           </div>
         ))}
-      </div >
-        
+      </div>
+      </>
 
-    
-    </div>
-
-    
+   
   );
 };
 

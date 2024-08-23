@@ -1,6 +1,8 @@
 import { Chart, registerables } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import styled from "styled-components";
+import { useEffect ,useState,useContext} from 'react';
+import UsersInfoContext from '../../../contexts/usersInfoContext';
 
 
 Chart.register(...registerables);
@@ -84,14 +86,76 @@ const Card = styled.div`
 //   },
 // };
 
-const Graph = (remainingGoal) => {
+const Graph = () => {
+
+  const [usersInfo, setUsersInfo] = useState({});
+  const [dailyNeeds ,setDailyNeeds]= useState({
+    calories:1,
+    carbs:1,
+    protein:1,
+    fat:1
+  });
+  const {remainingGoal,dailyneeds} = useContext(UsersInfoContext)
+  const [remaininggoal,setremaininggoal] = useState({})
+
+  useEffect(()=>{
+
+    // setDailyNeeds({
+    //   calories:usersInfo.calorie_needs,
+    //   carbs:usersInfo.carbs,
+    //   protein:usersInfo.protein,
+    //   fat:usersInfo.fat
+    // })
+    setremaininggoal(remainingGoal)
+  
+  },[remainingGoal])
+
+
+  useEffect(() => {
+
+    // if(!isUserIdReady){return}
+    console.log("useEffect called")
+    console.log("hello")
+    // setStoredUsersInfo(JSON.parse(localStorage.getItem("usersInfo")))
+    const storedUsersInfo =  localStorage.getItem("usersInfo");
+    console.log("storedUsersInfo",storedUsersInfo)
+          if(storedUsersInfo) {
+
+            const parsedUsersInfo = JSON.parse(storedUsersInfo)
+
+            setUsersInfo(parsedUsersInfo);
+       
+
+
+
+            // setUsersGoal(parsedUsersInfo.users_goal);
+            // console.log("usersGoal",usersGoal);
+
+    
+          } 
+          else{
+
+            // fetchUsersInfofromDatabase(userId);
+            
+          
+          }
+  }, []); 
 
   const data = {
     labels: ['Daily Intake', 'Calories', 'Carbs', 'Fats', 'Proteins'],
     datasets: [
       {
         label: 'Todays Goal',
-        data: [1652, 500, 300, 200, 400],
+        data: [
+          // 1652, 500, 300, 200, 400
+         0,
+          dailyneeds.calories,
+          dailyneeds.carbs,
+          dailyneeds.fat,
+          dailyneeds.protein,
+          
+          
+        ],
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1,
@@ -99,15 +163,17 @@ const Graph = (remainingGoal) => {
       {
         label: 'Remaining',
         data: [
-          234,
-          445,
-          200,
-          150,
-          300
-          // remainingGoal.calories,
-          // remainingGoal.carbs,
-          // remainingGoal.fat,
-          // remainingGoal.protein,
+          // 234,
+          // 445,
+          // 200,
+          // 150,
+          // 300
+          0,
+          remainingGoal.calories,
+          remainingGoal.carbs,
+          remainingGoal.fat,
+          remainingGoal.protein,
+          
            // assuming no remaining value for 'Daily Intake'
         ],
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
